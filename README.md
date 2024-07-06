@@ -43,6 +43,28 @@ This will only cover --> Neural networks, Fully connected neural network, Convol
 
 Excellenet thing is that - If we learn these foundational building blocks, then we can get into these other styles of things here. (with Pytorch)
 
+### What are neural networks ?
+search - 3 Blue 1 Brown
+
+Numerical encoding of input data - Images/ texts/ audio - then we pass it thorugh neural network to learn patterns/ features/ weights - Learnt representations are considered as outputs - convert these outputs into human underastadable terms. 
+
+Anatomy of Neural Networks -
+Input layer (data goes in here) - Hidden Layer(s) (learns pattern in data) - Output Layer (prediction probabilities)
+
+#### Note : 
+pattern is an arbitary term, you will often hear embedding, weights, feature representation, feature vectors - all refering to similar things.
+
+Each layer in neural netwrok is using linear/ non linear functions to find/draw patterns in our data.
+
+
+#### Paradigms of how neural network learns -
+1. Supervised Learning - Loads of labelled data : data + label
+2. Unsupervised & self-supervised Learning - just the data w/o any label : data + NO Label - Forms clusters / different the datas but doesn't know the type(label) of data.
+3. Transfer Learning - more like head start - its very powerful technique - It takes the pattern that one model has learnt of a certain dataset and transferring it to another model.
+
+
+
+
 
 
 
