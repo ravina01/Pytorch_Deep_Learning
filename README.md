@@ -111,9 +111,18 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 ### Pytorch Workflow
 ![image](https://github.com/ravina01/Pytorch_Deep_Learning/assets/91215561/9a50f09e-32fd-4e32-8ea3-b389d315c8f6)
 
+### TIPS:
+1. Motto#1 - Write and Run the code
+2. Motto#2 - Explore and experiment - Best way to learn anything - Experiment, experiment, experiment!
+3. Motto#3 - Visualize what you don't understand - Visualize, visualize, visualize!
+4. Motto#4 - If in doubt, run the code and find out!
 
-
-
+### Conatins -
+#### 00. PyTorch Fundamentals
+#### 01. PyTorch Workflow Fundamentals
+#### 02. PyTorch Neural Network Classification
+#### 03. PyTorch Computer Vision
+#### 04. PyTorch Custom Datasets
 
 
 
