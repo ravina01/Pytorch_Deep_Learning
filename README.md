@@ -61,9 +61,35 @@ Each layer in neural netwrok is using linear/ non linear functions to find/draw 
 1. Supervised Learning - Loads of labelled data : data + label
 2. Unsupervised & self-supervised Learning - just the data w/o any label : data + NO Label - Forms clusters / different the datas but doesn't know the type(label) of data.
 3. Transfer Learning - more like head start - its very powerful technique - It takes the pattern that one model has learnt of a certain dataset and transferring it to another model.
+(sorry not talking about Reinforcement learning here)
+
+#### Note: We will focus on - Supervised and Transfer Learning for now. 
+
+#### Applications - 
+1. Recommendations systems
+2. Sequence to sequence (seq2seq): Translations, speech recognition
+3. Classification/ Regression: Computer vision, Natural language processing
 
 
+### Let's Talk about Pytorch - it's research favourite
+Don't forget internet is your friend. Your ground truth is - https://pytorch.org/
+Make sure you install and read basic documentation.
 
+
+#### Most popular research deep learning framework - by Meta
+1. Write fast DL code in python (able to run on GPU/ many GPUs)
+2. Able to access many pre-built DL models
+3. Whole stack: pre-process data, model data, deploy model in your application/ cloud
+   
+
+#### Tracks latest and greatest DL papers with Code - https://paperswithcode.com/trends
+
+Pytorch levereges CUDA to use your ML/DL code on NVIDIA GPUs(Graphics Processing Unit)
+
+
+### What is a Tensor ?
+Any representation of numbers - scalars (0-dimensional), vectors (1-dimensional), and matrices (2-dimensional) to potentially higher dimensions.
+Do watch : What's a Tensor? by Dan Fleisch (https://www.youtube.com/watch?v=f5liqUk0ZTw)
 
 
 
