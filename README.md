@@ -91,6 +91,8 @@ Pytorch levereges CUDA to use your ML/DL code on NVIDIA GPUs(Graphics Processing
 Any representation of numbers - scalars (0-dimensional), vectors (1-dimensional), and matrices (2-dimensional) to potentially higher dimensions.
 Do watch : What's a Tensor? by Dan Fleisch (https://www.youtube.com/watch?v=f5liqUk0ZTw)
 
+Best Way to learn ML,DL
+![image](https://github.com/ravina01/Pytorch_Deep_Learning/assets/91215561/6e2e4a65-7ad9-4afb-8752-54dc97df0978)
 
 
 
