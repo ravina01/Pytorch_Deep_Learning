@@ -94,6 +94,27 @@ Do watch : What's a Tensor? by Dan Fleisch (https://www.youtube.com/watch?v=f5li
 #### Best Way to learn ML,DL
 ![image](https://github.com/ravina01/Pytorch_Deep_Learning/assets/91215561/6e2e4a65-7ad9-4afb-8752-54dc97df0978)
 
+#### What are we going to cover Broadly ?
+Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
+
+#### What's Next? 
+1. Pre-processing data (getting it into tensors)
+2. Building and using pre-trained Deep Learning models
+3. Fitting model to the data (learning patterns)
+4. Making predictions with a model (using patterns)
+5. Evaluating model predictions
+6. Saving and loading model
+7. Using a trained model to make predictions on custom data
+
+#### We will be cooking up lots of code! ML, DL is little bit of science and little bit of arts.
+
+### Pytorch Workflow
+![image](https://github.com/ravina01/Pytorch_Deep_Learning/assets/91215561/9a50f09e-32fd-4e32-8ea3-b389d315c8f6)
+
+
+
+
+
 
 
 
