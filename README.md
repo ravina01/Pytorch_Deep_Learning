@@ -119,6 +119,37 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 
 ### Conatins -
 #### 00. PyTorch Fundamentals
+
+### Q. whats tensor ? - torch.tenso() : print(torch.__version__) : 2.0.0+cu117
+- main building block of data in deep learning
+- multi-dimensional numeric data
+- scalars - ndim = 0,shape - torch.Size([]), vectors - ndim = 1,shape = torch.Size([Number of elements inside vector])
+-(scalar - use item() to get numeric value instead of tensors)
+- matrix: ndim =2, torch.Size([2, 2])
+- tensor: ndim =3 or more.. torch.shape([1,3,3]) - Total number of 2d matrix [row x col] - 1, 3, 3 or 2, 2, 2etc
+- Number of Square bracets give you - ndim count.
+- scalar , vector - lower case (usually)
+- matrix and tensors - Upper case (usually)
+
+### Random Tensor -
+- They are important as they start with tensors full of random numbers and then adjust those random numbers to better represent data.
+- generates a tensor filled with random numbers drawn from a uniform distribution on the interval [0,1]
+- start with randome numbers-> look at data -> update random numbers
+- torch.rand(shape/size- 1,2,3 or 2,2) - 2d/3d dim
+- randome_image_size_tensor = torch.rand(size=(244, 244, 3)) # height, width, no of channels
+- we can create all zeroes / all ones tensors of any shape
+ - dtype - default datatype - its torch.float32: single precision (1 sign bit, 8 exponent bits, 23 significand bits).
+ - torch.range(0,10) - deprecated - use torch.arange(start, end, step) instead
+ - when creating tenors you can pass - value, dtype, device, requires_grad (weather or not track gradients with this tensor)
+ - data types talk about precision in computing, 
+   
+### Typical errors we might face when dealing with tensors -
+1. Tensors not right datatype
+2. Tenosrs not right shape
+3. Tensors not on right device, by default its cpu
+
+### Tensor Opeerations 
+
 #### 01. PyTorch Workflow Fundamentals
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
