@@ -187,9 +187,14 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 - torch.permute(x, (2, 0, 1)).size()
   
 #### 4. Selecting data from Tensors - Indexing
-
+- slicing - to get column, indexing
+  
 #### 5. Tensors and Numpy
-
+- converting pytorch data in numpy arrays and vice-versa.
+- torch.from_numpy(ndarray) - NumPy array -> PyTorch tensor.
+- torch.Tensor.numpy() - PyTorch tensor -> NumPy array.
+- Default data type of numpy is float64 and Pytorch tensor is flaot 32 - Dont forget.
+  
 #### 4. Selecting data from Tensors - Indexing
 #### 4. Selecting data from Tensors - Indexing
 
