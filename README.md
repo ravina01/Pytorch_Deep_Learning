@@ -56,7 +56,6 @@ pattern is an arbitary term, you will often hear embedding, weights, feature rep
 
 Each layer in neural netwrok is using linear/ non linear functions to find/draw patterns in our data.
 
-
 #### Paradigms of how neural network learns -
 1. Supervised Learning - Loads of labelled data : data + label
 2. Unsupervised & self-supervised Learning - just the data w/o any label : data + NO Label - Forms clusters / different the datas but doesn't know the type(label) of data.
@@ -70,22 +69,18 @@ Each layer in neural netwrok is using linear/ non linear functions to find/draw 
 2. Sequence to sequence (seq2seq): Translations, speech recognition
 3. Classification/ Regression: Computer vision, Natural language processing
 
-
 ### Let's Talk about Pytorch - it's research favourite
 Don't forget internet is your friend. Your ground truth is - https://pytorch.org/
 Make sure you install and read basic documentation.
-
 
 #### Most popular research deep learning framework - by Meta
 1. Write fast DL code in python (able to run on GPU/ many GPUs)
 2. Able to access many pre-built DL models
 3. Whole stack: pre-process data, model data, deploy model in your application/ cloud
    
-
 #### Tracks latest and greatest DL papers with Code - https://paperswithcode.com/trends
 
 Pytorch levereges CUDA to use your ML/DL code on NVIDIA GPUs(Graphics Processing Unit)
-
 
 ### What is a Tensor ?
 Any representation of numbers - scalars (0-dimensional), vectors (1-dimensional), and matrices (2-dimensional) to potentially higher dimensions.
@@ -199,8 +194,19 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 - In short how neural net learns ->
 - start with random numbers -> tensor operations -> update the random tensors to try and make them better represntations
 - of the data -> again, again, again...
-- to reproduce the randomness in the neural network - comes the concept of *random seed*
-- 
+- to reproduce the randomness in the neural network - comes the concept of **random seed**
+- torch.rand() doesnt have seed method so we have to explicitly set seed to 42 or any number before producing random tensor
+- manual seed flavors the randomness - makes it reproducable
+  
+```python
+RANDOM_SEED = 42
+
+torch.manual_seed(RANDOM_SEED)
+t3= torch.rand(3,3)
+torch.manual_seed(RANDOM_SEED)
+t4 = torch.rand(3,3)
+print(t3==t4)
+  
 #### 4. Selecting data from Tensors - Indexing
 
 
