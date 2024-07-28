@@ -182,10 +182,17 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 5. Unsqueeze - adds one dim to the target tensor at specific dim=0,1,2, depends
 - making single list/vector of 10 elements into 1,10 or 10,1
   
-6. Permute - Return a view of the input with dim permuted (swapped) in a certain way
-- rearanges the tensors
+6. Permute - Return a view(shares same memo) of the input with swapped order of dimenstions (height , width, channels) can be (channels, H, W)
+- rearanges the tensors.
+- torch.permute(x, (2, 0, 1)).size()
   
-#### 4. 
+#### 4. Selecting data from Tensors - Indexing
+
+#### 5. Tensors and Numpy
+
+#### 4. Selecting data from Tensors - Indexing
+#### 4. Selecting data from Tensors - Indexing
+
 
 #### 01. PyTorch Workflow Fundamentals
 #### 02. PyTorch Neural Network Classification
