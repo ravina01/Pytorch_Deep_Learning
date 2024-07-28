@@ -149,20 +149,30 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 3. Tensors not on right device, by default its cpu
 
 ### Tensor Opeerations 
-1. Addition , Sub, Divison, multiplication(element wise, matrxi multiplication aka dot product)
+#### 1. Addition , Sub, Divison, multiplication(element wise, matrxi multiplication aka dot product)
 
      One of the most common errors in DL - tensor shape : Investigation
      1. (3,2) @ (2, 3) - @ = matmul
      2. Match the inner dimensions
      3. You can take transpose
 
-2. Tensor Aggregation - min, max, mean and sum of tensors
--We might get error as not correct data type when calculating mean of tensors.
+#### 2. Tensor Aggregation - min, max, mean and sum of tensors
+- We might get error as not correct data type when calculating mean of tensors.
 - Solution - change the data type of tensor as mean can't be done on long datatypes(tensor_A.dtype = int64)
 - Finding positional min and max tensors
 - argmin and argmax - Find the position in tensor that has the min/max value with argmin()/ argmax()
 - Returns index at of min/max element
-4. 
+- argmax(), argmin() is used in Softmax
+
+#### 3. Reshaping, Viewing and Stacking, Squeeze and Unsqueeze, Permuting tensors
+- Reshape - reshapes to a defined shape - we can reshape in multiple of shape of tensor
+- Tensor of size 1, 10 - can we shaped to 5,2 or 10, 1 colum wise
+- View - return a  view of input tensor of a certain shape but, keep the same memory as orginal tensor
+- Stacking - combine multiple tensors, on top of each other - vstack or side by side (hstack)
+- Squeeze - remove one dim from tensors
+- Unsqueeze - adds one dim to the target tensor
+- Permute - Return a view of the input with dim permuted (swapped) in a certain way
+  
 5. 
 
 #### 01. PyTorch Workflow Fundamentals
