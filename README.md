@@ -191,11 +191,16 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
   
 #### 5. Tensors and Numpy
 - converting pytorch data in numpy arrays and vice-versa.
-- torch.from_numpy(ndarray) - NumPy array -> PyTorch tensor.
-- torch.Tensor.numpy() - PyTorch tensor -> NumPy array.
+- torch.from_numpy(ndarray) - NumPy array -> PyTorch tensor.- float64 by default
+- torch.Tensor.numpy() - PyTorch tensor -> NumPy array. - float 32 by default
 - Default data type of numpy is float64 and Pytorch tensor is flaot 32 - Dont forget.
   
-#### 4. Selecting data from Tensors - Indexing
+#### 5. Pytorch Reproducibility - Trying to take random out of random
+- In short how neural net learns ->
+- start with random numbers -> tensor operations -> update the random tensors to try and make them better represntations
+- of the data -> again, again, again...
+- to reproduce the randomness in the neural network - comes the concept of *random seed*
+- 
 #### 4. Selecting data from Tensors - Indexing
 
 
