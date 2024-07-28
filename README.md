@@ -149,6 +149,21 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 3. Tensors not on right device, by default its cpu
 
 ### Tensor Opeerations 
+1. Addition , Sub, Divison, multiplication(element wise, matrxi multiplication aka dot product)
+
+     One of the most common errors in DL - tensor shape : Investigation
+     1. (3,2) @ (2, 3) - @ = matmul
+     2. Match the inner dimensions
+     3. You can take transpose
+
+2. Tensor Aggregation - min, max, mean and sum of tensors
+-We might get error as not correct data type when calculating mean of tensors.
+- Solution - change the data type of tensor as mean can't be done on long datatypes(tensor_A.dtype = int64)
+- Finding positional min and max tensors
+- argmin and argmax - Find the position in tensor that has the min/max value with argmin()/ argmax()
+- Returns index at of min/max element
+4. 
+5. 
 
 #### 01. PyTorch Workflow Fundamentals
 #### 02. PyTorch Neural Network Classification
