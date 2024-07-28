@@ -200,20 +200,11 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
   
 ```python
 RANDOM_SEED = 42
-
 torch.manual_seed(RANDOM_SEED)
 t3= torch.rand(3,3)
 torch.manual_seed(RANDOM_SEED)
 t4 = torch.rand(3,3)
 print(t3==t4)
-  
-#### 4. Selecting data from Tensors - Indexing
-
-
-#### 01. PyTorch Workflow Fundamentals
-#### 02. PyTorch Neural Network Classification
-#### 03. PyTorch Computer Vision
-#### 04. PyTorch Custom Datasets
 
 
 
