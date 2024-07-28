@@ -165,27 +165,27 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 - argmax(), argmin() is used in Softmax
 
 #### 3. Reshaping, Viewing and Stacking, Squeeze and Unsqueeze, Permuting tensors
-- Reshape - reshapes to a defined shape - we can reshape in multiple of shape of tensor
+1. Reshape - reshapes to a defined shape - we can reshape in multiple of shape of tensor
 - Tensor of size 1, 10 - can we shaped to 5,2 or 10, 1 colum wise
 
-- View - return a  view of input tensor of a certain shape but, keep the same memory as orginal tensor
+2. View - return a  view of input tensor of a certain shape but, keep the same memory as orginal tensor
 - if z is view of x and we modify the z then it modifies the x also.
 
-- Stacking - combine multiple tensors, on top of each other - vstack or side by side (hstack)
+3. Stacking - combine multiple tensors, on top of each other - vstack or side by side (hstack)
 - x_stck = torch.stack([x, x, x])
 - Concatenates a sequence of tensors along new dim
 - dim takes 0, 1,-1(colum wise) values
   
-- Squeeze - remove one dim from tensors
+4. Squeeze - remove one dim from tensors
 - Removes all single dimensions from target tensors
 
-- Unsqueeze - adds one dim to the target tensor at specific dim=0,1,2, depends
+5. Unsqueeze - adds one dim to the target tensor at specific dim=0,1,2, depends
 - making single list/vector of 10 elements into 1,10 or 10,1
   
-- Permute - Return a view of the input with dim permuted (swapped) in a certain way
+6. Permute - Return a view of the input with dim permuted (swapped) in a certain way
 - rearanges the tensors
   
-5. 
+#### 4. 
 
 #### 01. PyTorch Workflow Fundamentals
 #### 02. PyTorch Neural Network Classification
