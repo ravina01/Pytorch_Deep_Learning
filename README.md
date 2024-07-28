@@ -205,9 +205,3 @@ t3= torch.rand(3,3)
 torch.manual_seed(RANDOM_SEED)
 t4 = torch.rand(3,3)
 print(t3==t4)
-
-
-
-
-
-
