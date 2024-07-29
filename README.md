@@ -384,10 +384,6 @@ y_preds and y_tests are not even close, let's visualize the data
 - Pytorch official Guidelines, replace torch.no_grad() -> torch.inference_mode()
 - torch.inference_mode() is Preferred.
 
-
-![image](https://github.com/user-attachments/assets/5376ee32-9069-4892-af79-6f83191daa67)
-
-
 ##### 2.5 Let's Train the data
 - We saw the predictions are not even close to data plots, start with random values and train the model to estimate the idel values of training parameters which better represent the data.
 - The whole idea of training is to move from **unknown(random)** parameters to some **known** parameters.
@@ -468,6 +464,10 @@ for epoch in range(epochs):
 ```
 
 ![image](https://github.com/user-attachments/assets/9f44fb5d-d74d-4af5-b8b8-485d20eb4c0e)
+
+**Note** - Learning rate Scheduling - We can start with largers steps and then we can take the smaller steps to reach the minimum loss value.
+
+![image](https://github.com/user-attachments/assets/0182a112-4cf2-44eb-a6ac-73346b4d9140)
 
 ##### 2.7 Testing Loop Steps and Intution
 
