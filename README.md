@@ -434,6 +434,7 @@ Steps ->
 - Math is taken care by Pytorch.
   
 ```python
+torch.manual_seed(42)
 # Epoch is one loop through data - Hyperparameter
 epochs = 1
 
@@ -468,6 +469,19 @@ for epoch in range(epochs):
 **Note** - Learning rate Scheduling - We can start with largers steps and then we can take the smaller steps to reach the minimum loss value.
 
 ![image](https://github.com/user-attachments/assets/0182a112-4cf2-44eb-a6ac-73346b4d9140)
+
+Results after Training - 
+```python
+model_linearReg.state_dict()
+# OrderedDict([('weights', tensor([0.6990])), ('bias', tensor([0.3093]))])
+
+with torch.inference_mode():
+    y_preds_new_test = model_linearReg(X_test)
+plot_predictions(predictions=y_preds_new_test)
+
+```
+
+![image](https://github.com/user-attachments/assets/0ab0a6d7-eb82-45de-856d-0e6dc70e08db)
 
 ##### 2.7 Testing Loop Steps and Intution
 
