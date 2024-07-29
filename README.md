@@ -113,6 +113,9 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 4. Motto#4 - If in doubt, run the code and find out!
 
 ### Conatins -
+# PyTorch Fundamentals
+
+---
 ### 00. PyTorch Fundamentals
 
 ### Q. whats tensor ? - torch.tenso() : print(torch.__version__) : 2.0.0+cu117
