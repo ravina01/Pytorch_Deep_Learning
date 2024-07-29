@@ -112,7 +112,7 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 3. Motto#3 - Visualize what you don't understand - Visualize, visualize, visualize!
 4. Motto#4 - If in doubt, run the code and find out!
 
-### Conatins -
+### Let's get started -
 # PyTorch Fundamentals
 
 ---
