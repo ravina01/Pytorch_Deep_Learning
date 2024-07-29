@@ -574,8 +574,35 @@ print(MODEL_SAVE_PATH)
 # 3. Save the model state_dict()
 torch.save(obj=model_linearReg.state_dict(), f=MODEL_SAVE_PATH)
 ```
+##### Load The model ->
+- 1. Since we saved the state_dict() rather than the entire model, will now create new instance of the model class and then load the saved_dict() into that.
 
+```python
+# 1. Create nee instance of model class
+loaded_model = LinearReg()
 
+# 2. Load the saved state_dict()
+loaded_state_dict = torch.load(f=MODEL_SAVE_PATH)
+
+loaded_model.load_state_dict(loaded_state_dict)
+
+loaded_model.state_dict()
+# OrderedDict([('weights', tensor([0.6990])), ('bias', tensor([0.3093]))])
+```
+
+You can Predict on these loaded values  
+```python
+# 1. Put the loaded model into evaluation mode
+loaded_model.eval()
+
+# 2. Use the inference mode context manager to make predictions
+with torch.inference_mode():
+    loaded_model_preds = loaded_model(X_test) # perform a forward pass on the test data with the loaded model
+
+# Compare previous model predictions with loaded model predictions (these should be the same)
+y_preds == loaded_model_preds
+# return vector of True (10,1)
+```
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
