@@ -310,9 +310,11 @@ class LinearReg(nn.Module): # inhherits
 * torch.nn.Module - The base class for all neural netwoek modules. If you subclass it, you should override the forward() method.
 * torch.optim - Pytorch optimizers this will help with Gradient Descent.
 * def forward() - All nn.Module subclass require you to override the forward(), this method defines what happens in forward computation.
+  
 ![image](https://github.com/user-attachments/assets/761b21d8-2528-41cf-bf57-63fb0ea39a38)
 
-Refer - Pytorch cheat sheet - https://pytorch.org/tutorials/beginner/ptcheat.html
+**Refer - Pytorch cheat sheet - https://pytorch.org/tutorials/beginner/ptcheat.html**
+
 ![image](https://github.com/user-attachments/assets/4c50351c-9bfb-4ff1-a9fc-873bcd6f540c)
 
   
