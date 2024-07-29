@@ -261,6 +261,16 @@ tensor_back_on_cpu = t1_on_gpu.cpu().numpy() # its on cpu
 - 6.4 Making predictions
 - 6.5 Saving and loading a model
 
+#### 1. Data (preparing and loading)
+1. Setup - Will use Torch.nn (Read more - https://pytorch.org/docs/stable/nn.html)
+2. Creating a Simple Dataset Using the Linear Regression Formula
+- Data can be almost anything -> Excel spreadsheet, Images, Videos, Audio, DNA and pattterns, and Text etc.
+3. Machine learning is a game of two parts:
+Turn your data, whatever it is, into numbers (a representation).
+Pick or build a model to learn the representation as best as possible.
+4. Let's Create a Simple Dataset Using the Linear Regression Formula
+5. Splitting data into traing and test, validation sets
+![image](https://github.com/user-attachments/assets/f10e7cb6-6de6-402b-9c6c-3c4fd2a98ccd)
 
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
