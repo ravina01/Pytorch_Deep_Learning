@@ -459,6 +459,11 @@ for epoch in range(epochs):
     # By default, how the optimizer changes will accumulate through the loop so, 
     # we have to zero them above in step 3
 ```
+
+![image](https://github.com/user-attachments/assets/9f44fb5d-d74d-4af5-b8b8-485d20eb4c0e)
+
+##### 2.7 Testing Loop Steps and Intution
+
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
