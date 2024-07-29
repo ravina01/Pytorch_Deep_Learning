@@ -497,8 +497,13 @@ torch.manual_seed(42)
 # Epoch is one loop through data - Hyperparameter
 epochs = 100
 
-# Loop through the data.
 
+# Create empty loss lists to track values
+train_loss_values = []
+test_loss_values = []
+epoch_count = []
+
+# Loop through the data.
 for epoch in range(epochs):
 
     # TRAINING CODE
@@ -533,6 +538,9 @@ for epoch in range(epochs):
 
         test_loss = loss_fn(y_test_pred, y_test)
 
+        epoch_count.append(epoch)
+        train_loss_values.append(loss.detach().numpy())
+        test_loss_values.append(test_loss.detach().numpy())
     
     if epoch % 10 == 0:
         print(f"Epoch: {epoch} | Loss: {loss} | Test Loss: {test_loss}")
