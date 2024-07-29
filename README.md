@@ -317,7 +317,19 @@ class LinearReg(nn.Module): # inhherits
 
 ![image](https://github.com/user-attachments/assets/4c50351c-9bfb-4ff1-a9fc-873bcd6f540c)
 
-  
+```python
+MANUAL_SEED = 42
+
+torch.manual_seed(MANUAL_SEED)
+model_linearReg = LinearReg()
+list(model_linearReg.parameters())
+'''
+[Parameter containing:
+ tensor([0.3367], requires_grad=True),
+ Parameter containing:
+ tensor([0.1288], requires_grad=True)]
+'''
+```
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
