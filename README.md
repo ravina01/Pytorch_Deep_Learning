@@ -211,7 +211,7 @@ print(t3==t4)
 ```python
 device = "cuda" if torch.cuda.is_available() else "cpu"
 ```
-#### 5. Setting up Device-agnostic code and putting tensors on and off the GPU
+#### 6. Setting up Device-agnostic code and putting tensors on and off the GPU
 - Putting tensors/ models on GPU 0 faster computations
 - Numpy works  on CPU so move tensors back to CPU before converting into numpy array
 - if tensor is on gpu we cant transform it to numpy
