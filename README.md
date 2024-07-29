@@ -275,6 +275,7 @@ Pick or build a model to learn the representation as best as possible.
 ![image](https://github.com/user-attachments/assets/f10e7cb6-6de6-402b-9c6c-3c4fd2a98ccd)
 
 #### 2. Build model
+##### 2.1 Flow
 - Start with random values (weights and bias)
 - look at training data and adjust the random values to better represent (or get closer to) the ideal values
 - How does it do so ?
@@ -304,7 +305,7 @@ class LinearReg(nn.Module): # inhherits
         return self.weights * x + self.bias
 ```
 
-##### Pytorch Model Building Essentials -
+##### 2.2 Pytorch Model Building Essentials -
 * torch.nn - contains all the buildings for computational graphs (neural net is computational graph itself)
 * torch.nn.Parameter - Wraps the tensor as a parameter, indicating that it should be optimized during training.
 * torch.nn.Module - The base class for all neural netwoek modules. If you subclass it, you should override the forward() method.
@@ -335,7 +336,7 @@ model_linearReg.state_dict()
 OrderedDict([('weights', tensor([0.3367])), ('bias', tensor([0.1288]))])
 ```
 
-##### Let's make Predictions ->
+##### 2.3 Let's make Predictions ->
 - start with random numbers and with help of neural nets progress towards the ideal numbers (weights, bias) which better fit the data.
 - We make predictions using torch.inference_mode() method.
 - To check our models' predictive powe, let see how well it predicts 'y_test' based on 'X_test'
@@ -369,9 +370,29 @@ y_test =  tensor([[0.8600],
 '''
 ```
 y_preds and y_tests are not even close, let's visualize the data
+
 ![image](https://github.com/user-attachments/assets/66021384-7de8-41d4-badd-8c361e07405c)
 
+##### 2.4 To Improvise the Model and better fit the linear regression model, we need to change few things ->
+- Inference model turns off the gradient tracking.
+- Always write predictions with the with torch.inference_mode():
+- If you pass your input data through the instance of the class, then the predictions would be containg the gradient tracking.
+- Benefit - it saves memory, no need to keep track of the gradients in inference mode.
+- Pytorch official Guidelines, replace torch.no_grad() -> torch.inference_mode()
+- torch.inference_mode() is Preferred.
   
+##### 2.5 Let's Train the data
+- We saw the predictions are not even close to data plots, start with random values and train the model to estimate the idel values of training parameters which better represent the data.
+- The whole idea of training is to move from **unknown(random)** parameters to some **known** parameters.
+- To measure how poor the predictions are will use Loss functions.
+- **Note**: Loss functions may be also called cost functions / criterion in different areas.
+  
+- **Things we need to Train ->**
+  
+- 1. **Loss Functions** - talk about how wrong your model's predictions are to the ideal outputs. Lower the better.
+- 2. **Optimizer** - takes into account the loss of the model and adjusts the model's parameters. (weights and bias) to improve the loss function.
+  3. We need 2 loops - 1. Training Loop and 2. Testing Loop
+    
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
