@@ -113,7 +113,7 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 4. Motto#4 - If in doubt, run the code and find out!
 
 ### Conatins -
-#### 00. PyTorch Fundamentals
+### 00. PyTorch Fundamentals
 
 ### Q. whats tensor ? - torch.tenso() : print(torch.__version__) : 2.0.0+cu117
 - main building block of data in deep learning
@@ -225,7 +225,40 @@ tensor_back_on_cpu.device # device(type='cpu')
 tensor_back_on_cpu = t1_on_gpu.cpu().numpy() # its on cpu
 ```
 
-#### 01. PyTorch Workflow Fundamentals
+# PyTorch Workflow Fundamentals
+
+---
+
+### 01. PyTorch Workflow Fundamentals
+
+#### 1. Data (preparing and loading)
+- Split data into training and test sets
+
+#### 2. Build model
+- PyTorch model building essentials
+- Checking the contents of a PyTorch model
+- Making predictions using `torch.inference_mode()`
+
+#### 3. Train model
+- Creating a loss function and optimizer in PyTorch
+- Creating an optimization loop in PyTorch
+- PyTorch training loop
+- PyTorch testing loop
+
+#### 4. Making predictions with a trained PyTorch model (inference)
+
+#### 5. Saving and loading a PyTorch model
+- Saving a PyTorch model's `state_dict()`
+- Loading a saved PyTorch model's `state_dict()`
+
+#### 6. Putting it all together
+- 6.1 Data
+- 6.2 Building a PyTorch linear model
+- 6.3 Training
+- 6.4 Making predictions
+- 6.5 Saving and loading a model
+
+
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
