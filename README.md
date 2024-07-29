@@ -392,7 +392,36 @@ y_preds and y_tests are not even close, let's visualize the data
 - 1. **Loss Functions** - talk about how wrong your model's predictions are to the ideal outputs. Lower the better.
 - 2. **Optimizer** - takes into account the loss of the model and adjusts the model's parameters. (weights and bias) to improve the loss function.
   3. We need 2 loops - 1. Training Loop and 2. Testing Loop
-    
+  4. Will setup MAE(Mean absolute error/ L1) loss function and SGD(Stoacstic(random) Gradient Descent) Optimizer.
+  5. Stochastic Gradient Descent (SGD) in deep learning updates model parameters by computing the gradient of the loss function using a single randomly selected data point or a mini-batch, adjusting the parameters in the direction that minimizes the loss. This process is repeated iteratively to gradually converge to the optimal parameters.
+  6. Loss functions tells the error between expected and estimated output while optimizers try to get ideal values of model parameters.
+  7. **Learning rate** - The learning rate is a small value that controls how much the model's parameters are adjusted during each step of the training process. It determines the size of the steps the model takes towards minimizing the error, balancing between too slow progress and overshooting the optimal solution.
+     
+```python
+print(model_linearReg.state_dict())
+# Parameters - OrderedDict([('weights', tensor([0.3367])), ('bias', tensor([0.1288]))])
+
+# Loss Function
+loss_fn = nn.L1Loss()
+
+#Learning rate - Hyperparameter. Steps taken to optimize the parameters
+lr = 1e-2
+
+# Optimizer - pass models Parameters + LR
+optimizer = torch.optim.SGD(model_linearReg.parameters(), lr)
+```
+**Q. Which loss function and optimizer should I use ?**
+- This is problem specific. But with experince, you will get an idea, of what works and what doesn't work with your problem set.
+- 1. Regression Problem -
+     - Loss Function - L1 Loss
+     - Optimizer - SGD
+- 2. Classification Problem -
+     - Loss - Binary Cross Entropy Loss (Binary Classification Problem)
+     - Optimizer - SGD, Adam, RMS Prop
+     
+##### 2.6 Training Loop Steps and Intution
+
+
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
