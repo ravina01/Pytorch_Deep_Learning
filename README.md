@@ -546,6 +546,7 @@ for epoch in range(epochs):
         print(f"Epoch: {epoch} | Loss: {loss} | Test Loss: {test_loss}")
         print(model_linearReg.state_dict())
 ```
+![image](https://github.com/user-attachments/assets/d678625f-276a-4f7d-a9f6-45e37d0ee3aa)
 
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
