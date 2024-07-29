@@ -548,6 +548,34 @@ for epoch in range(epochs):
 ```
 ![image](https://github.com/user-attachments/assets/d678625f-276a-4f7d-a9f6-45e37d0ee3aa)
 
+##### 3. Save and Load Model - Inference Pipeline
+Three main methods to save and load (Serialize and Deserialize)
+- 1. torch.save() - allows you to save Pytorch object in Python's pickle format
+  2. torch.load() - allows you to load a saved Pytorch Object 
+  3. torch.nn.Module.load_state_dict() - allows to load a model's saved state dictionary - all paras and their final/updated values which resulated into minimum Loss.
+  4. We can save and load entire model or just the state_dict()
+     
+```python
+from pathlib import Path
+
+# 1. Create directory
+MODEL_PATH = Path("models")
+
+MODEL_PATH.mkdir(parents=True, exist_ok=True)
+
+# 2. Create model save path
+MODEL_NAME = "01_pytorch_workflow_Linear_Reg.pth" # or .partition
+
+MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
+
+print(MODEL_SAVE_PATH)
+# models/01_pytorch_workflow_Linear_Reg.pth
+
+# 3. Save the model state_dict()
+torch.save(obj=model_linearReg.state_dict(), f=MODEL_SAVE_PATH)
+```
+
+
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
