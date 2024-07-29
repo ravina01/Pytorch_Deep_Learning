@@ -484,6 +484,60 @@ plot_predictions(predictions=y_preds_new_test)
 ![image](https://github.com/user-attachments/assets/0ab0a6d7-eb82-45de-856d-0e6dc70e08db)
 
 ##### 2.7 Testing Loop Steps and Intution
+- Tetsing mode is set by model.eval()
+- It turns off different settings in the model no needed for evalution/testing (dropout/batchNorm layers)
+- Steps ->
+- 1. set to eval mode
+  2. with torch.inference_mode() - turns off gradient calculation
+  3. forward() pass on Test data - calcualte the test predictions
+  4. Calculate test loss (test_data and its labels)
+
+ ```python
+torch.manual_seed(42)
+# Epoch is one loop through data - Hyperparameter
+epochs = 100
+
+# Loop through the data.
+
+for epoch in range(epochs):
+
+    # TRAINING CODE
+
+    # set moodel to traing mode
+    # Train mode - sets all paras that requites gradients to True
+    model_linearReg.train()
+
+    #1. Forward pass
+    y_pred = model_linearReg.forward(X_train)
+
+    # 2. Calculate Loss Function
+    loss = loss_fn(y_pred, y_train)
+
+    # 3. Optimizer Zero Grad
+    optimizer.zero_grad()
+
+    # 4. Loss Backward - Perform backpropoogation on the loss wrt to the parameters 
+    loss.backward()
+
+    # 5.Optimizer Step
+    optimizer.step()
+    # By default, how the optimizer changes will accumulate through the loop so, 
+    # we have to zero them above in step 3
+
+
+    # TESTING CODE
+    model_linearReg.eval() # turns off gradient Tracking
+
+    with torch.inference_mode():
+        y_test_pred = model_linearReg.forward(X_test)
+
+        test_loss = loss_fn(y_test_pred, y_test)
+
+    
+    if epoch % 10 == 0:
+        print(f"Epoch: {epoch} | Loss: {loss} | Test Loss: {test_loss}")
+        print(model_linearReg.state_dict())
+```
 
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
