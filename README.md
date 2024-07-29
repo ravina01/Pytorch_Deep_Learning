@@ -282,7 +282,10 @@ Pick or build a model to learn the representation as best as possible.
 - Through 2 main algorithms - Pytorch is taking care of below algorirthms so that we don't have to work on them.
 - 1. Gradient Descent
   2. Backpropogation
-     
+
+![image](https://github.com/user-attachments/assets/eb39ff65-7e8e-44c7-b4f6-76dd4a9298f7)
+
+
 ```python
 class LinearReg(nn.Module): # inhherits
 
@@ -380,7 +383,11 @@ y_preds and y_tests are not even close, let's visualize the data
 - Benefit - it saves memory, no need to keep track of the gradients in inference mode.
 - Pytorch official Guidelines, replace torch.no_grad() -> torch.inference_mode()
 - torch.inference_mode() is Preferred.
-  
+
+
+![image](https://github.com/user-attachments/assets/5376ee32-9069-4892-af79-6f83191daa67)
+
+
 ##### 2.5 Let's Train the data
 - We saw the predictions are not even close to data plots, start with random values and train the model to estimate the idel values of training parameters which better represent the data.
 - The whole idea of training is to move from **unknown(random)** parameters to some **known** parameters.
