@@ -323,13 +323,55 @@ MANUAL_SEED = 42
 torch.manual_seed(MANUAL_SEED)
 model_linearReg = LinearReg()
 list(model_linearReg.parameters())
+
 '''
 [Parameter containing:
  tensor([0.3367], requires_grad=True),
  Parameter containing:
  tensor([0.1288], requires_grad=True)]
 '''
+
+model_linearReg.state_dict()
+OrderedDict([('weights', tensor([0.3367])), ('bias', tensor([0.1288]))])
 ```
+
+##### Let's make Predictions ->
+- start with random numbers and with help of neural nets progress towards the ideal numbers (weights, bias) which better fit the data.
+- We make predictions using torch.inference_mode() method.
+- To check our models' predictive powe, let see how well it predicts 'y_test' based on 'X_test'
+- Input data is passed through forward() method.
+  
+```python
+with torch.inference_mode():
+    y_preds = model_linearReg(X_test)
+'''
+y_preds = tensor([[0.3982],
+        [0.4049],
+        [0.4116],
+        [0.4184],
+        [0.4251],
+        [0.4318],
+        [0.4386],
+        [0.4453],
+        [0.4520],
+        [0.4588]])
+
+y_test =  tensor([[0.8600],
+         [0.8740],
+         [0.8880],
+         [0.9020],
+         [0.9160],
+         [0.9300],
+         [0.9440],
+         [0.9580],
+         [0.9720],
+         [0.9860]]))
+'''
+```
+y_preds and y_tests are not even close, let's visualize the data
+![image](https://github.com/user-attachments/assets/66021384-7de8-41d4-badd-8c361e07405c)
+
+  
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
