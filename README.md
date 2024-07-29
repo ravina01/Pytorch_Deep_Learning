@@ -269,8 +269,40 @@ tensor_back_on_cpu = t1_on_gpu.cpu().numpy() # its on cpu
 Turn your data, whatever it is, into numbers (a representation).
 Pick or build a model to learn the representation as best as possible.
 4. Let's Create a Simple Dataset Using the Linear Regression Formula
-5. Splitting data into traing and test, validation sets
+5. Splitting data into traing and test, validation(not always) sets
+- Scikit learn's split adds randomness to the data
+  
 ![image](https://github.com/user-attachments/assets/f10e7cb6-6de6-402b-9c6c-3c4fd2a98ccd)
+
+#### 2. Build model
+- Start with random values (weights and bias)
+- look at training data and adjust the random values to better represent (or get closer to) the ideal values
+- How does it do so ?
+- Through 2 main algorithms - Pytorch is taking care of below algorirthms so that we don't have to work on them.
+- 1. Gradient Descent
+  2. Backpropogation
+     
+```python
+class LinearReg(nn.Module): # inhherits
+
+    def __init__(self) -> None:
+        super().__init__() # calls constructor of parent class
+
+        self.weights = nn.Parameter(torch.randn(1, requires_grad=True, dtype=torch.float32))
+
+        self.bias = nn.Parameter(torch.randn(1, requires_grad=True, dtype=torch.float))
+
+        # torch.randn(1): Generates a tensor with a single random value from a normal distribution (mean 0, variance 1).
+        # nn.Parameter(): Wraps the tensor as a parameter, indicating that it should be optimized during training.
+        # requires_grad=True: Specifies that gradients should be computed for this parameter during backpropagation.
+
+
+    def forward(self, x:torch.Tensor) -> torch.Tensor: # x is input data
+        #  forward pass is the computation performed to generate the output of the model from the input data.
+        # Any subclass of nn.module needs to override the forward method.
+        # Defines forward computation of the model
+        return self.weights * x + self.bias
+```
 
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
