@@ -303,7 +303,15 @@ class LinearReg(nn.Module): # inhherits
         # Defines forward computation of the model
         return self.weights * x + self.bias
 ```
+- Pytorch Model Building Essentials -
+* torch.nn - contains all the buildings for computational graphs (neural net is computational graph itself)
+* torch.nn.Parameter - Wraps the tensor as a parameter, indicating that it should be optimized during training.
+* torch.nn.Module - The base class for all neural netwoek modules. If you subclass it, you should override the forward() method.
+* torch.optim - Pytorch optimizers this will help with Gradient Descent.
+* def forward() - All nn.Module subclass require you to override the forward(), this method defines what happens in forward computation.
+* 
 
+  
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
