@@ -420,8 +420,45 @@ optimizer = torch.optim.SGD(model_linearReg.parameters(), lr)
      - Optimizer - SGD, Adam, RMS Prop
      
 ##### 2.6 Training Loop Steps and Intution
+Steps ->
+- Loop through data
+- Forward pass - calculates forward propagation - to make predictions on data.
+- Calculate the loss (compare the forward pass predictions to GT labels)
+- Optimizer zero grad - By default, how the optimizer changes will accumulate through the loop so, we have to 0 it in next iteration.
+- Loss backward - move backwards through network to calculate the gradients of each of the parameters of our model with respect to the loss. (**backpropogation**)
+- Optimizer Step - use optimizer to adjust/updtae the model's parameters - to try and minimze(improve) the loss. (**gradient decent**) - minimize the gradients -> 0
+- This is how our model goes from random parameters to beter parameters using math.
+- Math is taken care by Pytorch.
+  
+```python
+# Epoch is one loop through data - Hyperparameter
+epochs = 1
 
+# Loop through the data.
 
+for epoch in range(epochs):
+
+    # set moodel to traing mode
+    # Train mode - sets all paras that requites gradients to True
+    model_linearReg.train()
+
+    #1. Forward pass
+    y_pred = model_linearReg.forward(X_train)
+
+    # 2. Calculate Loss Function
+    loss = loss_fn(y_pred, y_train)
+
+    # 3. Optimizer Zero Grad
+    optimizer.zero_grad()
+
+    # 4. Loss Backward - Perform backpropoogation on the loss wrt to the parameters 
+    loss.backward()
+
+    # 5.Optimizer Step
+    optimizer.step()
+    # By default, how the optimizer changes will accumulate through the loop so, 
+    # we have to zero them above in step 3
+```
 #### 02. PyTorch Neural Network Classification
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
