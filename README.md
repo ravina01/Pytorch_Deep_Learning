@@ -603,6 +603,21 @@ with torch.inference_mode():
 y_preds == loaded_model_preds
 # return vector of True (10,1)
 ```
-#### 02. PyTorch Neural Network Classification
+
+# PyTorch Neural Network Classification
+
+---
+
+### 02. PyTorch Neural Network Classification
+
+##### Types of classification -
+1. Binary Classification
+2. Multiclass Classification
+3. Multilabel Classification
+
+**What are we going to cover -->**
+
+
+
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
