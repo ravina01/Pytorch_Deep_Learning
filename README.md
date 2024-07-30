@@ -610,10 +610,14 @@ y_preds == loaded_model_preds
 
 ### 02. PyTorch Neural Network Classification
 
+- A classification problem involves predicting whether something is one thing or another.
+  
 ##### Types of classification -
 1. Binary Classification
 2. Multiclass Classification
 3. Multilabel Classification
+   
+![image](https://github.com/user-attachments/assets/e96bb96c-98d4-47ad-a3a4-9ba1a5561b66)
 
 **What are we going to cover -->**
 * Architecture of a neural Network Classification Model
@@ -637,7 +641,21 @@ Input and Output shapes vary dependind on the problem you are working on. The pr
 ##### 2. High level Architecture of Classification Model (Overview)
 
 - Inputs to Classification Model - some form of numerical representation
+- Ouputs to Classification Model - some form of prediction probability
 - 
+![image](https://github.com/user-attachments/assets/0f0b4ec6-60c2-4072-967c-777648af7ff2)
+
+![image](https://github.com/user-attachments/assets/0626331c-1de7-4275-bd21-8af55c7ce0a8)
+
+
+Enough Theory, Now Let's Code ->
+Mini-Project - Toy Classification Dataset
+
+
+
+
+
+
 
 
 
