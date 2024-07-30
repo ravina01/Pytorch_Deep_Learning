@@ -627,6 +627,11 @@ y_preds == loaded_model_preds
   
 ##### 1. Classification Input and Output
 
+![image](https://github.com/user-attachments/assets/d2605ad1-f019-441b-a59e-d78fa774efdd)
+
+![image](https://github.com/user-attachments/assets/8bf64c4d-642b-41b9-8666-d02a31afe617)
+
+
 
 #### 03. PyTorch Computer Vision
 #### 04. PyTorch Custom Datasets
