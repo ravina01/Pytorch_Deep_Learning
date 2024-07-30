@@ -627,11 +627,21 @@ y_preds == loaded_model_preds
   
 ##### 1. Classification Input and Output
 
-![image](https://github.com/user-attachments/assets/d2605ad1-f019-441b-a59e-d78fa774efdd)
+When we use batch size 32 that means our machine look at 32 images at a time. Sadly, our computers don't have infinite computing power.
+Input and Output shapes vary dependind on the problem you are working on. The principle of encoding your data as numerical representation remians the same for the inputs, outputs would be some sort of prediction probabilities. 
 
 ![image](https://github.com/user-attachments/assets/8bf64c4d-642b-41b9-8666-d02a31afe617)
 
+![image](https://github.com/user-attachments/assets/32fe5a2e-085e-41db-9773-2bfcd23f6a0c)
+
+##### 2. High level Architecture of Classification Model (Overview)
+
+- Inputs to Classification Model - some form of numerical representation
+- 
 
 
-#### 03. PyTorch Computer Vision
-#### 04. PyTorch Custom Datasets
+
+### 03. PyTorch Computer Vision
+---
+### 04. PyTorch Custom Datasets
+---
