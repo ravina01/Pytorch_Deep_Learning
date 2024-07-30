@@ -616,7 +616,16 @@ y_preds == loaded_model_preds
 3. Multilabel Classification
 
 **What are we going to cover -->**
-
+* Architecture of a neural Network Classification Model
+* Input shapes and Output shapes of a classification model (features and labels)
+* Creative custom data to view, fit on and predict on
+* Steps in modelling -
+   * Creating a model, setting a loss function and optimizer, creating a training loop, evaluating a model.
+* Saving and loading models
+* Harnessing the power of non-linearity
+* Different classification evaluation methods
+  
+##### 1. Classification Input and Output
 
 
 #### 03. PyTorch Computer Vision
