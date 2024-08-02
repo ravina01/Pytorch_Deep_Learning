@@ -656,6 +656,74 @@ Mini-Project - Toy Classification Dataset
 
 ### 03. PyTorch Computer Vision
 ---
+1. Gettning a vision datatset to work with using torchvision.datasets
+2. Architecture of CNN with PyTorch
+3. End-to-end Multi-class Image Classification Problem
+4. Steps in modelling with CNN in Pytorch
+   - 1. Creating a CNN model with PyTorch
+   - 2. Picking loss and optimizer
+     3. Training a model
+     4. Evaluate a model
+
+
+#### CNN Architecture
+
+![image](https://github.com/user-attachments/assets/ebb8a953-7624-46d5-81f5-b71f48c8f744)
+
+#### Base CV Libraries - 
+ - The torchvision package consists of popular datasets, model architectures, and common image transformations for computer vision.
+ - torchvision.models - get pre-trained cv models
+ - torchvision.datasets - get datasets and data loading functions for CV
+ - torchvision.transforms - manipulating images to be suitable for use with an ML model, Turns image data into numerical data
+ - torch.utils.data.Dataset - base dataset class for PyTorch.
+ - torch.utils.data.Dataloader - creates python itererable over a dataset.
+ - - torch.nn has cnn layers, loss function, optimizers, etc
+   
+```python
+import torch
+from torch import nn
+
+import torchvision
+from torchvision import datasets
+from torchvision import transforms
+from torchvision.transforms import ToTensor # numpy array to tensors
+
+# Visualization
+import matplotlib.pyplot as plt
+```
+#### 1. Getting dataset - fashion MNIST - from torchvision.datasets
+```python
+## Setup training data
+
+train_data = datasets.FashionMNIST(
+    root = "data", # where to download
+    train = True, # do we want to download training datasets
+    download= True,
+    transform=ToTensor(), # transform the data , tensors
+    target_transform=None # transforming the labels
+)
+
+test_data = datasets.FashionMNIST(
+    root="data",
+    train = False, # do we want to download training datasets
+    download= True,
+    transform=ToTensor(), # transform the data , tensors
+    target_transform=None # transforming the labels
+)
+
+image, label = train_data[0]
+print(label, image.shape)
+# image, label = train_data[0]
+print(label, image.shape)
+```
+
+- Now will find patterns in Train data and Test on test_data
+- what totensor does to image data ?
+ - converts PIL image / numpy.ndarray (Hx W x C) in the ramge [0, 255] to a torch.FloatTensor of shape(Cx H X W) in range[0.0 , 1.0]
+ - Normalized image data.
+ - size (28, 28, 1) to  torch.Size([1, 28, 28]
+
+
 
 
 ### 04. PyTorch Custom Datasets
