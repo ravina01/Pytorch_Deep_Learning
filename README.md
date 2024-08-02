@@ -723,6 +723,35 @@ print(label, image.shape)
  - Normalized image data.
  - size (28, 28, 1) to  torch.Size([1, 28, 28]
 
+```python
+class_to_idx = train_data.class_to_idx
+class_to_idx
+# This gives us dicttionary of data label to index value
+```
+
+![image](https://github.com/user-attachments/assets/851da304-feb0-4a7e-994b-d7295a98c6ce)
+
+#### 2. Getting dataloader - turns our dataset into python iterable
+- Turn data into batches/ mini-batches
+- It's computationally efficient to group images and then use it for training purpose.
+- Your computing hardware wont be able to look at 60000 images in one hit. batch so we break it down to 32 size.
+- It gives our NN more chances to updates its gradient per epoch.
+- 
+![image](https://github.com/user-attachments/assets/d563b7ac-990e-41a7-be09-3f90cf8ca7dc)
+
+Turning datasets into dataloader -
+```python
+
+BATCH_SIZE = 32
+
+# turn datasets into iterables. (batches)
+
+train_dataloader = DataLoader(train_data, BATCH_SIZE, shuffle=True)
+test_dataloader = DataLoader(test_data, BATCH_SIZE, shuffle=False) # dont shuffle.
+len(train_dataloader), len(test_dataloader)
+# total batches = (1875, 313) divided by 32
+```
+we can chnage batch_size 32/64/128 etc
 
 
 
