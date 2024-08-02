@@ -651,15 +651,12 @@ Input and Output shapes vary dependind on the problem you are working on. The pr
 Enough Theory, Now Let's Code ->
 Mini-Project - Toy Classification Dataset
 
-
-
-
-
-
-
+![image](https://github.com/user-attachments/assets/f843d316-338c-41b4-86cc-121afa422fa1)
 
 
 ### 03. PyTorch Computer Vision
 ---
+
+
 ### 04. PyTorch Custom Datasets
 ---
