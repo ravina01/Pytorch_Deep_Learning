@@ -691,7 +691,7 @@ from torchvision.transforms import ToTensor # numpy array to tensors
 # Visualization
 import matplotlib.pyplot as plt
 ```
-#### 1. Getting dataset - fashion MNIST - from torchvision.datasets
+#### Model 0 - 1. Getting dataset - fashion MNIST - from torchvision.datasets
 ```python
 ## Setup training data
 
@@ -905,7 +905,7 @@ model_0_results
 - Without non-linearity we got - 84 as acciracy after 3 epochs on test data.
 - We need to introduce non-linearity now.
 
-#### Building Better model with non-linearity
+#### Model 1-  Building Better model with non-linearity
 After adding no-linearity by RELU. lets see how the model performance.
 
 It didn't perform well with added non-linearity + GPU.
@@ -930,7 +930,40 @@ However, this is largely dependant on the hardware you're using. With practice, 
 
 Read more from https://horace.io/brrr_intro.html
 
-### CNN - Convolutional Neural Network -
+### Model 2: Building a Convolutional Neural Network (CNN)
+
+![image](https://github.com/user-attachments/assets/26107503-5c27-4fd3-94f1-9a77c3af7ae2)
+
+![image](https://github.com/user-attachments/assets/5b5b2251-b343-459d-9154-2888365e917d)
+
+Resource - https://poloclub.github.io/cnn-explainer/
+
+1. It's time to create a Convolutional Neural Network (CNN or ConvNet).
+2. CNN's are known for their capabilities to find patterns in visual data.
+3. The CNN model we're going to be using is known as TinyVGG from the CNN Explainer website.
+4. It follows the typical structure of a convolutional neural network:
+
+Input layer -> [Convolutional layer -> activation layer -> pooling layer] -> Output layer
+
+![image](https://github.com/user-attachments/assets/d2eed454-3432-4e8b-9036-8b26aced4faf)
+
+![image](https://github.com/user-attachments/assets/1d2b861b-d492-40d4-83e4-1cea8dd80b87)
+
+CNN Resukt 
+- {'model_name': 'FashionMNISTModelV21',
+ 'model_loss': 2.3023061752319336,
+ 'model_acc': 9.994009584664537}
+
+![image](https://github.com/user-attachments/assets/728acd57-a793-44d9-85c7-7ec75bdd1d22)
+
+
+V0 - Only flatten Linear layers - CPU
+V1 - Relu + GPu
+V2 - CNN + GPU
+
+![image](https://github.com/user-attachments/assets/aa8a2677-0617-4f64-804d-d407ae5217cd)
+
+Make Predictions with CNN -
 
 
 
