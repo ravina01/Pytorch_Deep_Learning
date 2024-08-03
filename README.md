@@ -905,5 +905,34 @@ model_0_results
 - Without non-linearity we got - 84 as acciracy after 3 epochs on test data.
 - We need to introduce non-linearity now.
 
+#### Building Better model with non-linearity
+After adding no-linearity by RELU. lets see how the model performance.
+
+It didn't perform well with added non-linearity + GPU.
+FashionMNISTV0 - CPU
+FashionMNISTV1 - GPU
+
+- {'model_name': 'FashionMNISTV0',
+ 'model_loss': 0.4778009355068207,
+ 'model_acc': 83.33666134185303}
+- {'model_name': 'FashionMNISTV1',
+ 'model_loss': 0.6850008964538574,
+ 'model_acc': 75.01996805111821}
+
+**NOTE**: Sometimes, The training time on CUDA vs CPU will depend largely on the quality of the CPU/GPU you're using. Read on for a more explained answer.
+- Question: "I used a a GPU but my model didn't train faster, why might that be?"
+- Answer: Well, one reason could be because your dataset and model are both so small (like the dataset and model we're working with) the benefits of using a GPU are outweighed by the time it actually takes to transfer the data there.
+- There's a small bottleneck between copying data from the CPU memory (default) to the GPU memory.
+- So for smaller models and datasets, the CPU might actually be the optimal place to compute on.
+- But for larger datasets and models, the speed of computing the GPU can offer usually far outweighs the cost of getting the data there.
+- Theres overhead in copying data from cpu to gpu.
+However, this is largely dependant on the hardware you're using. With practice, you will get used to where the best place to train your models is.
+
+Read more from https://horace.io/brrr_intro.html
+
+### CNN - Convolutional Neural Network -
+
+
+
 ### 04. PyTorch Custom Datasets
 ---
