@@ -753,7 +753,157 @@ len(train_dataloader), len(test_dataloader)
 ```
 we can chnage batch_size 32/64/128 etc
 
+Batch shape = 32, 1, 28, 28
 
+#### 3. Build baseLine model
+- start simply and add complexity when necessary.
+  
+![image](https://github.com/user-attachments/assets/d4f959d5-b111-4776-a149-17588bf38bab)
+
+- Loss function - Crossnetropy for multi class classification
+- Optimizer - SGD
+- Evaluation metric
+- ML is experimental you will often want to track are:
+- 1. Models performnace (loss + accuracy)
+  2. How fast it runs.
+
+Creating training Loop + TrainingModelon batches of data
+1. Loop through epochs
+2. Loop through training batches, perform training steps,
+3. calculate train loss / batch
+4. loop thriugh test batches, perform testing steps
+5. calculate test loss/ batch
+
+```python
+
+# Import tqdm for progress bar
+
+from tqdm.auto import tqdm
+
+torch.manual_seed(42)
+
+train_time_start_on_cpu = timer()
+
+epochs = 3
+
+# Create traina nd test loop
+for epoch in tqdm(range(epochs)):
+    print(f"Epoch: {epoch}\n---")
+
+
+    # Training
+
+    train_loss = 0
+
+    for batch, (image, label) in enumerate(train_dataloader):
+        
+        model_0.train()
+
+        # 1. forward pass
+
+        y_pred = model_0.forward(image)
+
+        # calculate loss
+
+        loss = loss_fn(y_pred, label)
+        train_loss += loss
+
+        # 3. Optimizer zero grad
+        optimizer.zero_grad()
+
+        # 4. Loss backward
+        loss.backward()
+
+        # 5. Optimizer step
+        optimizer.step()
+        
+
+        # Print out how many samples have been seen
+        if batch % 400 == 0:
+            print(f"Looked at {batch * len(image)}/{len(train_dataloader.dataset)} samples")
+
+    # Divide total train loss by length of train dataloader (average loss per batch per epoch)
+    train_loss /= len(train_dataloader)
+
+    ### Testing
+    # Setup variables for accumulatively adding up loss and accuracy 
+
+    test_loss, test_acc = 0, 0 
+    model_0.eval()
+    with torch.inference_mode():
+        for X, y in test_dataloader:
+            # 1. Forward pass
+            test_pred = model_0(X)
+
+            # 2. Calculate loss (accumatively)
+            test_loss += loss_fn(test_pred, y) 
+
+
+            # 3. Calculate accuracy (preds need to be same as y_true)
+            test_acc += accuracy_fn(y_true=y, y_pred=test_pred.argmax(dim=1))
+
+        # Divide total test loss by length of test dataloader (per batch)
+        test_loss /= len(test_dataloader)
+
+        # Divide total accuracy by length of test dataloader (per batch)
+        test_acc /= len(test_dataloader)
+    print(f"\nTrain loss: {train_loss:.5f} | Test loss: {test_loss:.5f}, Test acc: {test_acc:.2f}%\n")
+
+    # Calculate training time      
+train_time_end_on_cpu = timer()
+total_train_time_model_0 = print_train_time(start=train_time_start_on_cpu, 
+                                           end=train_time_end_on_cpu,
+                                           device=str(next(model_0.parameters()).device))
+```
+
+#### 4. Make predictions + get results
+```python
+torch.manual_seed(42)
+def eval_model(model: torch.nn.Module, 
+               data_loader: torch.utils.data.DataLoader, 
+               loss_fn: torch.nn.Module, 
+               accuracy_fn):
+    """Returns a dictionary containing the results of model predicting on data_loader.
+
+    Args:
+        model (torch.nn.Module): A PyTorch model capable of making predictions on data_loader.
+        data_loader (torch.utils.data.DataLoader): The target dataset to predict on.
+        loss_fn (torch.nn.Module): The loss function of model.
+        accuracy_fn: An accuracy function to compare the models predictions to the truth labels.
+
+    Returns:
+        (dict): Results of model making predictions on data_loader.
+    """
+    loss, acc = 0, 0
+    model.eval()
+    with torch.inference_mode():
+        for X, y in tqdm(data_loader):
+            # Make predictions with the model
+            y_pred = model(X)
+            
+            # Accumulate the loss and accuracy values per batch
+            loss += loss_fn(y_pred, y)
+            acc += accuracy_fn(y_true=y, 
+                                y_pred=y_pred.argmax(dim=1)) # For accuracy, need the prediction labels (logits -> pred_prob -> pred_labels)
+        
+        # Scale loss and acc to find the average loss/acc per batch
+        loss /= len(data_loader)
+        acc /= len(data_loader)
+        
+    return {"model_name": model.__class__.__name__, # only works when model was created with a class
+            "model_loss": loss.item(),
+            "model_acc": acc}
+
+# Calculate model 0 results on test dataset
+model_0_results = eval_model(model=model_0, data_loader=test_dataloader,
+    loss_fn=loss_fn, accuracy_fn=accuracy_fn
+)
+model_0_results
+
+```
+
+- Without non-linearity we got - 84 as acciracy after 3 epochs on test data.
+- We need to introduce non-linearity now.
 
 ### 04. PyTorch Custom Datasets
 ---
