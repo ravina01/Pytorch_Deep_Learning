@@ -969,3 +969,110 @@ Make Predictions with CNN -
 
 ### 04. PyTorch Custom Datasets
 ---
+
+
+#### what are we going to do ?
+
+- getting custom dataset with pytorch
+- Becoming one with the data (Prepare and visualize)
+- Transforming data for use with a model
+- Loading custom data with pre-built functions and custom functions
+- Building food vision mini to classify images
+- Comparing models with and without data augmentation
+- Making predictions on custom data
+
+Dataset - 101 food (https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/)
+
+- Instead of 101 food classes though, we're going to start with 3: pizza, steak and sushi.
+- Its subset of 101 dataset.
+- 101 different classes of food. 1000 / class 750 train and 250 test total 100000 images
+- 3 classes of food
+- Try things on smaller scale.
+- Speed up how fast we can experiment
+
+ ![image](https://github.com/user-attachments/assets/a240f3be-6dce-4cb5-809d-3a3d008c88d2)
+
+ 
+#### 1. Visualize the image data
+Let's write some code to:
+
+- Get all of the image paths using pathlib.Path.glob() to find all of the files ending in .jpg.
+- Pick a random image path using Python's random.choice().
+- Get the image class name using pathlib.Path.parent.stem.
+- And since we're working with images, we'll open the random image path using PIL.Image.open() (PIL stands for Python Image Library).
+- We'll then show the image and print some metadata.
+
+```python
+import random
+from PIL import Image
+
+# Set seed
+random.seed(42) # <- try changing this and see what happens
+
+# 1. Get all image paths (* means "any combination")
+image_path_list = list(image_path.glob("*/*/*.jpg"))
+
+# 2. Get random image path
+random_image_path = random.choice(image_path_list)
+
+# 3. Get image class from path name (the image class is the name of the directory where the image is stored)
+image_class = random_image_path.parent.stem
+
+# 4. Open image
+img = Image.open(random_image_path)
+
+# 5. Print metadata
+print(f"Random image path: {random_image_path}")
+print(f"Image class: {image_class}")
+print(f"Image height: {img.height}") 
+print(f"Image width: {img.width}")
+img
+```
+
+Now Visualize with Matplotlib
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+img_as_array = np.asarray(img)
+print(img_as_array.shape)
+plt.imshow(img_as_array)
+
+plt.title(f"Image class: {image_class} | Image shape: {img_as_array.shape} -> [height, width, color_channels]")
+plt.axis(False)
+```
+
+#### 2. Transforming Data - Turn target data into tensors
+
+Before we can use our image data with PyTorch we need to:
+
+- Turn it into tensors (numerical representations of our images).
+- Turn it into a torch.utils.data.Dataset and subsequently a torch.utils.data.DataLoader, we'll call these Dataset and DataLoader for short.
+
+#### 3. Loading image dataset 
+
+#### 3.1 Option 1 - using Image Folder
+- we can load image classification data using 'torchvision.datasets.Imagefolder' (https://pytorch.org/vision/stable/generated/torchvision.datasets.ImageFolder.html)
+- This class inherits from DatasetFolder so the same methods can be overridden to customize the dataset.
+```python
+# Use ImageFolder to create dataset(s)
+from torchvision import datasets
+train_data = datasets.ImageFolder(root=train_dir, # target folder of images
+                                  transform=data_transform, # transforms to perform on data (images)
+                                  target_transform=None) # transforms to perform on labels (if necessary)
+
+test_data = datasets.ImageFolder(root=test_dir, 
+                                 transform=data_transform)
+
+print(f"Train data:\n{train_data}\nTest data:\n{test_data}")
+
+```
+#### 3.2 Turn loaded images into DataLoader's
+
+
+
+
+
+
+
