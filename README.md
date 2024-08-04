@@ -1066,13 +1066,127 @@ test_data = datasets.ImageFolder(root=test_dir,
                                  transform=data_transform)
 
 print(f"Train data:\n{train_data}\nTest data:\n{test_data}")
-
 ```
+
+
 #### 3.2 Turn loaded images into DataLoader's
 
 
+Turning our Dataset's into DataLoader's makes them iterable so a model can go through learn the relationships between samples and targets (features and labels).
+
+To keep things simple, we'll use a batch_size=1 and num_workers=1.
+
+What's num_workers?
+
+Good question.
+
+It defines how many subprocesses will be created to load your data.
+
+Think of it like this, the higher value num_workers is set to, the more compute power PyTorch will use to load your data.
+
+Personally, I usually set it to the total number of CPUs on my machine via Python's os.cpu_count(). its 16 oin my system
+```python
+from torch.utils.data import DataLoader
+BATCH_SIZE = 4
+NUM_WORKER = 1
+
+# turn datasets into iterables. (batches)
+
+train_dataloader = DataLoader(train_data, BATCH_SIZE, num_workers=NUM_WORKER, shuffle=True)
+test_dataloader = DataLoader(test_data, BATCH_SIZE, num_workers=NUM_WORKER, shuffle=False)
+```
+
+#### 3.3 Option 2 : Creating Custom ImageFolder - Create a custom Dataset to replicate ImageFolder
+1. Want to be able to load images from file
+2. want to be able to get class names from dataset
+3. want to be able to get classes as Dictionary from datasets
+we used pre-existing ImageFolder function.
+
+Pros -
+
+- can create a dataset out of almost anything
+- Not limited to Pytorch pre-built dataset fnctions
+
+Cons -
+- doesnt mean it will work
+- we have to write more code and this might be prone to errors
 
 
+Creating a helper function to get class names
+Let's write a helper function capable of creating a list of class names and a dictionary of class names and their indexes given a directory path.
 
+To do so, we'll:
 
+- Get the class names using os.scandir() to traverse a target directory (ideally the directory is in standard image classification format).
+- Raise an error if the class names aren't found (if this happens, there might be something wrong with the directory structure).
+- Turn the class names into a dictionary of numerical labels, one for each class.
 
+------
+**We'll build one to replicate the functionality of torchvision.datasets.ImageFolder().**
+
+This will be good practice, plus, it'll reveal a few of the required steps to make your own custom Dataset.
+
+It'll be a fair bit of a code... but nothing we can't handle!
+
+Let's break it down:
+
+1. Subclass torch.utils.data.Dataset.
+2. Initialize our subclass with a targ_dir parameter (the target data directory) and transform parameter (so we have the option to transform our data if needed).
+3. Create several attributes for paths (the paths of our target images), transform (the transforms we might like to use, this can be None), classes and class_to_idx (from our find_classes() function).
+4. Create a function to load images from file and return them, this could be using PIL or torchvision.io (for input/output of vision data).
+5. Overwrite the __len__ method of torch.utils.data.Dataset to return the number of samples in the Dataset, this is recommended but not required. This is so you can call len(Dataset).
+6. Overwrite the __getitem__ method of torch.utils.data.Dataset to return a single sample from the Dataset, this is required.
+7. Will create len, getitem, we get class list and dictionary of keys and values of class names.
+
+```python
+"""  
+target_dir = to get the data from
+paths = paths of our images
+transform - transform the way you like
+classes 0 list of traget classes
+class_to_idx = a dict of the target classes mapped to int labels
+
+method - 
+1. load_images - read and open image at ith index
+2. __len__ method - length of dataset
+3. __getitem()__ - return given sample when passed index
+"""
+
+class ImageFolderCustom(Dataset):
+
+    def __init__(self, target_dir:str,
+                 transform = None) -> None:
+        super().__init__()
+
+        # Get all image paths
+        self.paths = list(pathlib.Path(target_dir).glob("*/*.jpg"))
+
+        # set up transform
+        self.tranform = data_transform
+
+        # create classes and class_to_idx attributes
+        self.classes, self.class_to_idx = find_classes(target_dir)
+        # one is list and nother one is map
+
+    
+    def load_images(self, index:int)-> Image.Image:
+
+        img_path = self.paths[index]
+        img = Image.open(img_path)
+        return img
+        
+
+    def __len__(self)->int:
+        return len(self.paths)
+
+    "Returns one sample of data, data and label (X, y)."
+    def __getitem__(self, index) -> Tuple[torch.Tensor, int]:
+        img = self.load_image(index)
+        class_name = self.paths[index].parent.name # class name
+        class_idx = self.class_to_idx[class_name]
+
+        if self.transform:
+            return self.transform(img), class_idx # return data, label (X, y)
+        else:
+            return img, class_idx # return data, label (X, y)
+```
