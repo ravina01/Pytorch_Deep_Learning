@@ -1634,3 +1634,82 @@ print(custom_image_pred_class)
 ![image](https://github.com/user-attachments/assets/ccaa9029-2feb-4cd3-a93b-ea757a0ab2d7)
 
 
+### 05. PyTorch Going Modular
+---
+- I have written nice code in a notebook, can I reuse it elsewhere?
+
+**What is going modular?**
+
+Going modular involves turning notebook code (from a Jupyter Notebook or Google Colab notebook) into a series of different Python scripts that offer similar functionality.
+
+For example, we could turn our notebook code from a series of cells into the following Python files:
+
+- data_setup.py - a file to prepare and download data if needed.
+- engine.py - a file containing various training functions.
+- model_builder.py or model.py - a file to create a PyTorch model.
+- train.py - a file to leverage all other files and train a target PyTorch model.
+- utils.py - a file dedicated to helpful utility functions.
+
+![image](https://github.com/user-attachments/assets/8b18eab5-2420-410c-b2a6-fe96d815068d)
+
+![image](https://github.com/user-attachments/assets/a65447fb-cb32-4791-ba5e-a026ce819388)
+
+![image](https://github.com/user-attachments/assets/af29d53b-d40f-4388-9bc6-1cec95dbf0e5)
+
+![image](https://github.com/user-attachments/assets/94cec09d-02b3-4242-9540-194f1b9c4dfb)
+
+**Goal:** we are going to write a train.py script that would be able to train our model.
+
+- notebooks are great way to visualize and experiment.
+- we can shift that code in python scripts and reuse the code blocks whereever necessary.
+- will convert the code from cell mode to python scripts
+
+#### Lets see what are we going to cover now ?
+
+The main concept of this section is: turn useful notebook code cells into reusable Python files.
+- Transorming data for use with a model
+- Loading custom data with pre-built functions
+- Building food vision mini to classify images
+- Turning useful notebook code into Python scripts
+- Training a pytorch model from command line
+  
+going_modular/
+├── going_modular/
+│   ├── data_setup.py
+│   ├── engine.py
+│   ├── model_builder.py
+│   ├── train.py
+│   └── utils.py
+├── models/
+│   ├── 05_going_modular_cell_mode_tinyvgg_model.pth
+│   └── 05_going_modular_script_mode_tinyvgg_model.pth
+└── data/
+    └── pizza_steak_sushi/
+        ├── train/
+        │   ├── pizza/
+        │   │   ├── image01.jpeg
+        │   │   └── ...
+        │   ├── steak/
+        │   └── sushi/
+        └── test/
+            ├── pizza/
+            ├── steak/
+            └── sushi/
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
