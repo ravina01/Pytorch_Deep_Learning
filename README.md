@@ -1190,3 +1190,102 @@ class ImageFolderCustom(Dataset):
         else:
             return img, class_idx # return data, label (X, y)
 ```
+**However, now we've written it once, we could move it into a .py file such as data_loader.py along with some other helpful data functions and reuse it later on.**
+
+#### Transforming and Augmenting images -
+- Data augmentation is the process of altering your data in such a way that you artificially increase the diversity of your training set.
+- Machine learning is all about harnessing the power of randomness and research shows that random transforms (like transforms.RandAugment() and transforms.TrivialAugmentWide()) generally perform better than hand-picked transforms.
+- apply image transformations to training data.
+- Training a model on this artificially altered dataset hopefully results in a model that is capable of better generalization (the patterns it learns are more robust to future unseen examples).
+  
+![image](https://github.com/user-attachments/assets/dadc4c76-1f80-40e6-9ea9-93f1a9cc37bd)
+
+
+```python
+from torchvision import transforms
+
+train_transforms = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.TrivialAugmentWide(num_magnitude_bins=31), # how intense range[0,31]
+    transforms.ToTensor() # use ToTensor() last to get everything between 0 & 1
+])
+
+# Don't need to perform augmentation on the test data
+test_transforms = transforms.Compose([
+    transforms.Resize((224, 224)), 
+    transforms.ToTensor()
+])
+
+```
+
+#### Impact on the Training Dataset
+- While the dataset size on disk remains the same, the number of unique images seen by the model during training effectively increases due to the augmentations. This helps the model generalize better by exposing it to a wider variety of data.
+- Advanced Augmentation with Libraries
+For more advanced data augmentation techniques, you can use libraries like **albumentations**, which offer a wide range of transformations.
+- Generalizes on unseen data.
+![image](https://github.com/user-attachments/assets/1bd5da2a-626a-4ce1-b8bc-33c499b8adf4)
+
+#### Key Features of TrivialAugmentWide
+- Tuning-Free: Unlike other augmentation methods that require extensive hyperparameter tuning to find the optimal augmentation policy, TrivialAugmentWide does not need any tuning. It simplifies the augmentation process by removing the need for manual adjustments.
+- Random Augmentation: It applies a single random augmentation operation to each image, chosen from a set of predefined augmentations. The intensity of the augmentation is also chosen randomly.
+-Wide Range of Operations: The predefined set of augmentations includes a wide variety of operations such as rotations, translations, flips, color adjustments, and more. This ensures that the model is exposed to diverse transformations during training, improving its robustness and generalization.
+
+
+
+#### Model 0 : Tiny VGG without data Augmentation
+1. Load train/test data transform the imgs to tenosrs and perfrom.
+2. Resize = 64x64, Tiny VGG in channels and then transform to tensors
+3. Train/test data from ImageFolder(default)/ Custom Made
+4. Lets build Tiny VGG Architecture
+```python
+# 1. LOAD TRAIN/TEST DATA
+from torchvision import datasets
+train_data = datasets.ImageFolder(root = train_dir,
+                                  transform=data_transform,
+                                  target_transform=None)
+
+test_data = datasets.ImageFolder(root = test_dir,
+                                  transform=data_transform,
+                                  target_transform=None)
+train_data, test_data
+
+```
+
+
+```python
+# 2. TRANFORMS - WITHOUT DATA AUGMENTATION
+simple_transform = transforms.Compose(
+    [
+        transforms.Resize(size=(64,64)),
+          # input to Tiny VGG
+        transforms.ToTensor()
+    ]
+)
+
+```
+
+```python
+# 3. DataLoader - Iterators to datsets in terms of batches of images
+BATCH_SIZE = 32
+NUM_WORKERS = os.cpu_count()
+
+train_data = DataLoader(dataset=train_data,
+                        batch_size=BATCH_SIZE,
+                        num_workers=NUM_WORKERS,
+                        shuffle=True)
+
+test_data = DataLoader(dataset=test_data,
+                        batch_size=BATCH_SIZE,
+                        num_workers=NUM_WORKERS
+                        shuffle=False)
+```
+
+
+
+
+
+
+
+
+
+
