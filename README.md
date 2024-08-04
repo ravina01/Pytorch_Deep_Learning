@@ -1673,30 +1673,11 @@ The main concept of this section is: turn useful notebook code cells into reusab
 - Turning useful notebook code into Python scripts
 - Training a pytorch model from command line
   
-going_modular/
-├── going_modular/
-│   ├── data_setup.py
-│   ├── engine.py
-│   ├── model_builder.py
-│   ├── train.py
-│   └── utils.py
-├── models/
-│   ├── 05_going_modular_cell_mode_tinyvgg_model.pth
-│   └── 05_going_modular_script_mode_tinyvgg_model.pth
-└── data/
-    └── pizza_steak_sushi/
-        ├── train/
-        │   ├── pizza/
-        │   │   ├── image01.jpeg
-        │   │   └── ...
-        │   ├── steak/
-        │   └── sushi/
-        └── test/
-            ├── pizza/
-            ├── steak/
-            └── sushi/
+**Things to note**
+- Docstrings - Writing reproducible and understandable code is important. And with this in mind, each of the functions/classes we'll be putting into scripts has been created with Google's Python docstring style in mind.
+- Imports at the top of scripts - Since all of the Python scripts we're going to create could be considered a small program on their own, all of the scripts require their input modules be imported at the start of the script for example:
 
-  
+**We are going to use Jupyterv magic function to create a '.py' file for scripts from notebook**
 
 
 
