@@ -1237,6 +1237,13 @@ For more advanced data augmentation techniques, you can use libraries like **alb
 2. Resize = 64x64, Tiny VGG in channels and then transform to tensors
 3. Train/test data from ImageFolder(default)/ Custom Made
 4. Lets build Tiny VGG Architecture
+5. torchinfo to print summary of our model - Use torchinfo to get an idea of the shapes going through our model¶
+6. Create Training + Testing loop Functions
+7. Train_step() - takes in a model and dataloader and trains the model on the dataloader.
+8. test_step() - takes in a model and dataloader and evaluate the model on the dataloader.
+9. Create Train Function to Train and Evaluate our Models = Combines train_step() +  test_step()
+10. 
+
 ```python
 # 1. LOAD TRAIN/TEST DATA
 from torchvision import datasets
@@ -1280,12 +1287,140 @@ test_data = DataLoader(dataset=test_data,
                         shuffle=False)
 ```
 
+![image](https://github.com/user-attachments/assets/ba11de23-f0f5-4f25-8575-8621b453cfba)
+
+```python
+# TRAIN LOOP
+def train_step(model: nn.Module,
+               dataloader: torch.utils.data.DataLoader,
+               loss_fn: nn.Module,
+               optimizer: torch.optim.Optimizer,
+               device=device):
+    
+    model.to(device)
+    model.tran()
+    train_loss, train_acc = 0,0
+
+    for batch, (X, y) in enumerate(dataloader):
+
+        X.to(device)
+        y.to(device)
+
+        # 1. forward pass
+        pred_y = model.forward(X)
+
+        # 2. Loss fun
+        loss = loss_fn(pred_y, y)
+        train_loss += loss.item()
+
+        # 3. Optimizer
+        optimizer.zero_grad()
+
+        # 4. backpropogation
+        loss.backward()
+
+        # 5. Optimizer
+        optimizer.step()
+
+        # Calculate accuracy
+        # y_pred_class = pred_y.argmax(dim=1)
+        y_pred_class = torch.argmax(torch.softmax(pred_y, dim=1), dim=1)
+        train_acc += (y_pred_class == y).sum().item()/len()
+
+    
+    train_loss = train_loss/len(dataloader)
+    train_acc = train_acc/len(dataloader)
+
+    return train_loss, train_acc
+
+```
 
 
+**Note on Logits and Softmax** : In the context of neural networks, particularly those used for classification tasks, the forward pass often outputs logits rather than probabilities. Logits are the raw, unnormalized scores produced by the last layer of the network before any activation function like softmax is applied.
 
 
+```python
+# TEST LOOP
+def test_step(model: nn.Module,
+               dataloader: torch.utils.data.DataLoader,
+               loss_fn: nn.Module,
+               optimizer: torch.optim.Optimizer,
+               device=device):
+    
 
+    model.to(device)
+    model.eval()
 
+    test_loss, test_acc = 0,0
 
+    with torch.inference_mode():
+        for batch, (X, y) in enumerate(dataloader):
 
+            X.to(device)
+            y.to(device)
 
+            y_pred = model.forward(X)
+
+            # 2. Loss fun
+            loss = loss_fn(y_pred, y)
+            test_loss += loss.item()
+
+            # accuracy
+            y_pred_class = torch.argmax(torch.softmax(y_pred, dim=1), dim=1)# Softmax converts logits to probabilities.
+            test_acc += (y_pred_class == y).sum().item()/len()
+
+    test_loss = test_loss/len(dataloader)
+    test_acc = test_acc/len(dataloader)
+
+    return test_loss, test_acc
+```
+
+```python
+# Train Loop
+import torch.utils
+import torch.utils.data
+
+# Create Train Function to Train and Evaluate our Models = Combines train_step() +  test_step()
+
+def train(model: torch.nn.Module,
+          train_dataloader: torch.utils.data.DataLoader,
+          test_dataloader: torch.utils.data.DataLoader,
+          optimizer: torch.optim.Optimizer, 
+          loss_fn: torch.nn.Module = nn.CrossEntropyLoss(), # defalult multi-class classifications
+          epochs:int = 5,
+          device=device):
+    
+    # 2. Make dict of results - empty
+
+    results = {
+        "train_loss": [],
+        "test_loss" : [],
+        "train_acc": [],
+        "test_acc":  []
+    }
+    # 3. Loop through training + testing steps for a number of epochs
+
+    for epoch in tqdm(range(epochs)):
+
+        train_loss, train_acc = train_step(model, train_dataloader, loss_fn, optimizer, device)
+
+        test_loss, test_acc = test_step(model, train_dataloader, loss_fn, device)
+
+        # 4. update res dictionary
+        results["train_loss"].append(train_loss)
+        results["test_loss"].append(test_loss)
+        results["train_acc"].append(train_acc)
+        results["test_acc"].append(test_acc)
+
+        # 5. whats happening ? 
+        print(
+            f"Epoch: {epoch+1} | "
+            f"train_loss: {train_loss:.4f} | "
+            f"train_acc: {train_acc:.4f} | "
+            f"test_loss: {test_loss:.4f} | "
+            f"test_acc: {test_acc:.4f}"
+        )
+
+    return results
+
+```
