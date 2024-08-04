@@ -1242,7 +1242,8 @@ For more advanced data augmentation techniques, you can use libraries like **alb
 7. Train_step() - takes in a model and dataloader and trains the model on the dataloader.
 8. test_step() - takes in a model and dataloader and evaluate the model on the dataloader.
 9. Create Train Function to Train and Evaluate our Models = Combines train_step() +  test_step()
-10. 
+10. Train the model putting it all together.
+11. Plot loss curve - track models progress over time - use train_loss, test_loss, test_acc, train_acc
 
 ```python
 # 1. LOAD TRAIN/TEST DATA
@@ -1303,8 +1304,8 @@ def train_step(model: nn.Module,
 
     for batch, (X, y) in enumerate(dataloader):
 
-        X.to(device)
-        y.to(device)
+        X = X.to(device)
+        y = y.to(device)
 
         # 1. forward pass
         pred_y = model.forward(X)
@@ -1356,8 +1357,8 @@ def test_step(model: nn.Module,
     with torch.inference_mode():
         for batch, (X, y) in enumerate(dataloader):
 
-            X.to(device)
-            y.to(device)
+            X = X.to(device)
+            y = y.to(device)
 
             y_pred = model.forward(X)
 
@@ -1424,3 +1425,212 @@ def train(model: torch.nn.Module,
     return results
 
 ```
+
+```python
+# Putting it all together
+torch.manual_seed(42)
+torch.cuda.manual_seed(42)
+
+NUM_EPOCHS = 10
+
+# recreate an instance of TinyVGG
+model_0 = TinyVGG(input_shape=3,
+                  hidden_units=10,
+                  output_shape=len(train_data.classes)).to(device)
+
+# setup Loss function + optimizer
+optimizer = torch.optim.Adam(model_0.parameters(), lr = 0.001)
+loss_fn = nn.CrossEntropyLoss()
+
+#start the timer
+
+from timeit import default_timer as timer
+start_time = timer()
+
+# Train model_0 without data augmentation
+
+model_0_results = train(model_0, train_dataloader_simple, test_dataloader_simple, optimizer, loss_fn, NUM_EPOCHS, device)
+
+# end timre
+
+end_time = timer()
+
+total_training_time = end_time - start_time
+print(f"Total Training time = {total_training_time:.3f} seconds")
+```
+![image](https://github.com/user-attachments/assets/39ed67af-4fe9-4236-b86b-9eb6be35a703)
+
+![image](https://github.com/user-attachments/assets/0d6fc6ab-44d9-4c4f-9ce5-f875f46549ab)
+
+
+```python
+def plot_loss_curves(results: Dict[str, List[float]]):
+    """Plots training curves of a results dictionary.
+
+    Args:
+        results (dict): dictionary containing list of values, e.g.
+            {"train_loss": [...],
+             "train_acc": [...],
+             "test_loss": [...],
+             "test_acc": [...]}
+    """
+    
+    # Get the loss values of the results dictionary (training and test)
+    loss = results['train_loss']
+    test_loss = results['test_loss']
+
+    # Get the accuracy values of the results dictionary (training and test)
+    accuracy = results['train_acc']
+    test_accuracy = results['test_acc']
+
+    # Figure out how many epochs there were
+    epochs = range(len(results['train_loss']))
+
+    # Setup a plot 
+    plt.figure(figsize=(15, 7))
+
+    # Plot loss
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, loss, label='train_loss')
+    plt.plot(epochs, test_loss, label='test_loss')
+    plt.title('Loss')
+    plt.xlabel('Epochs')
+    plt.legend()
+
+    # Plot accuracy
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, accuracy, label='train_accuracy')
+    plt.plot(epochs, test_accuracy, label='test_accuracy')
+    plt.title('Accuracy')
+    plt.xlabel('Epochs')
+    plt.legend()
+```
+![image](https://github.com/user-attachments/assets/970975c9-1b95-4d13-905a-c85216a418ec)
+
+
+
+#### Balance between Overfitting + Underfitting, How to deal with each ?
+
+![image](https://github.com/user-attachments/assets/e2662f25-b7e6-461d-8c9e-a55273922202)
+
+Left: If your training and test loss curves aren't as low as you'd like, this is considered underfitting. *Middle: When your test/validation loss is higher than your training loss this is considered overfitting. Right: The ideal scenario is when your training and test loss curves line up over time. This means your model is generalizing well. 
+
+![image](https://github.com/user-attachments/assets/b9e3e8da-dea0-4ebc-ae7c-c01724aedac5)
+
+1. An overfitting model is one that performs better (often by a considerable margin) on the training set than the validation/test set.
+2. If your training loss is far lower than your test loss, your model is overfitting.
+3. The other side is when your training and test loss are not as low as you'd like, this is considered underfitting.
+
+![image](https://github.com/user-attachments/assets/a77abc38-9970-43c4-8c86-8ad23f5c587e)
+![image](https://github.com/user-attachments/assets/ba5c1b63-9748-400b-b17a-56351752cb46)
+
+- One way we are going to try now is **data augmentation** for underfitting -
+
+#### tinyVGG with Data Augmentation - 
+- Lets try another experiment
+- same model use different transform
+- load data and dataloders with data augmenttaion
+- Use same Tiny VGG
+- Train with same function with train_step + test_step
+- Results - still underfitting the data see below image
+
+![image](https://github.com/user-attachments/assets/4af5855b-3fc9-4b6a-8daf-56cb0eff682f)
+
+#### How to compare results of 2 models
+1. hard coding
+2. Pytorch + Tensorboard
+3. Weights + Bias
+4. MLFlow
+
+![image](https://github.com/user-attachments/assets/81ff2633-06ae-472d-955c-c6b409c6fcaf)
+
+Build something like - https://nutrify.app/
+
+#### Making Prediction on custom image on trained Pytorch model - not in train/test dataset
+- Convert image to tensors and pass it thorugh the inference model
+- make sure its in sam format as your previous trained data
+- torch.float32 tensor - convert from uint8 to floa32 and then toTensor()
+- shape 64 x 64 x 3 - change the shape, resize before sending it to trained model
+- on the right device - convert from cpu to gpu
+- we can read image using torchvision
+  
+- PyTorch's torchvision has several input and output ("IO" or "io" for short) methods for reading and writing images and video in torchvision.io.
+
+- Since we want to load in an image, we'll use torchvision.io.read_image().
+
+- This method will read a JPEG or PNG image and turn it into a 3 dimensional RGB or grayscale torch.Tensor with values of datatype uint8 in range [0, 255].
+  
+```python
+# Load in custom image and convert the tensor values to float32
+custom_image = torchvision.io.read_image(str(custom_image_path)).type(torch.float32)
+
+# Divide the image pixel values by 255 to get them between [0, 1]
+custom_image = custom_image / 255. 
+
+# Print out image data
+# print(f"Custom image tensor:\n{custom_image}\n")
+print(f"Custom image shape: {custom_image.shape}\n")
+print(f"Custom image dtype: {custom_image.dtype}")
+
+"""
+Custom image shape: torch.Size([3, 4032, 3024])
+Custom image dtype: torch.float32
+"""
+
+```
+
+- Our model was trained on images with shape [3, 64, 64], whereas our custom image is currently [3, 4032, 3024].
+```python
+# Create transform pipleine to resize image
+custom_image_transform = transforms.Compose([
+    transforms.Resize((64, 64)),
+])
+
+# Transform target image
+custom_image_transformed = custom_image_transform(custom_image)
+
+# Print out original shape and new shape
+print(f"Original shape: {custom_image.shape}")
+print(f"New shape: {custom_image_transformed.shape}")
+
+```
+```python
+model_1.eval()
+with torch.inference_mode():
+    # Add an extra dimension to image
+    custom_image_transformed_with_batch_size = custom_image_transformed.unsqueeze(dim=0)
+    
+    # Print out different shapes
+    print(f"Custom image transformed shape: {custom_image_transformed.shape}")
+    print(f"Unsqueezed custom image shape: {custom_image_transformed_with_batch_size.shape}")
+    
+    # Make a prediction on image with an extra dimension
+    custom_image_pred = model_1(custom_image_transformed.unsqueeze(dim=0).to(device))
+"""
+Custom image transformed shape: torch.Size([3, 64, 64])
+Unsqueezed custom image shape: torch.Size([1, 3, 64, 64])
+"""
+
+print(custom_image_pred)
+# tensor([[-0.3249, -0.3194, -0.3367]], device='cuda:0')
+```
+
+**Convert these logits into -> prediction probabilities -> labels**
+```python
+custom_image_pred_probs = torch.softmax(custom_image_pred, dim=1)
+print(custom_image_pred_probs)
+# tensor([[0.3340, 0.3359, 0.3301]], device='cuda:0')
+# the probabilities are spread out, we need to assign label to it
+
+custom_image_pred_lable = torch.argmax(custom_image_pred_probs, dim=1).cpu()
+print(custom_image_pred_lable)
+# tensor([1], device='cuda:0')
+
+custom_image_pred_class = train_data.classes[custom_image_pred_lable]
+print(custom_image_pred_class)
+
+```
+**Takeaways**
+![image](https://github.com/user-attachments/assets/ccaa9029-2feb-4cd3-a93b-ea757a0ab2d7)
+
+
