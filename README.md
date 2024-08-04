@@ -113,10 +113,12 @@ Pytorch basics & fundamentals (dealing with tensors and tesnor operations)
 4. Motto#4 - If in doubt, run the code and find out!
 
 ### Let's get started -
+---
 # PyTorch Fundamentals
 
 ---
-### 00. PyTorch Fundamentals
+
+## 00. PyTorch Fundamentals
 
 ### Q. whats tensor ? - torch.tenso() : print(torch.__version__) : 2.0.0+cu117
 - main building block of data in deep learning
@@ -608,7 +610,7 @@ y_preds == loaded_model_preds
 
 ---
 
-### 02. PyTorch Neural Network Classification
+## 02. PyTorch Neural Network Classification
 
 - A classification problem involves predicting whether something is one thing or another.
   
@@ -654,8 +656,11 @@ Mini-Project - Toy Classification Dataset
 ![image](https://github.com/user-attachments/assets/f843d316-338c-41b4-86cc-121afa422fa1)
 
 
-### 03. PyTorch Computer Vision
+# PyTorch Computer Vision
 ---
+
+## 03. PyTorch Computer Vision
+
 1. Gettning a vision datatset to work with using torchvision.datasets
 2. Architecture of CNN with PyTorch
 3. End-to-end Multi-class Image Classification Problem
@@ -966,10 +971,10 @@ V2 - CNN + GPU
 Make Predictions with CNN -
 
 
-
-### 04. PyTorch Custom Datasets
+# PyTorch Custom Datasets
 ---
 
+### 04. PyTorch Custom Datasets
 
 #### what are we going to do ?
 
@@ -1633,9 +1638,11 @@ print(custom_image_pred_class)
 **Takeaways**
 ![image](https://github.com/user-attachments/assets/ccaa9029-2feb-4cd3-a93b-ea757a0ab2d7)
 
-
-### 05. PyTorch Going Modular
+# PyTorch Going Modular
 ---
+
+## 05. PyTorch Going Modular
+
 - I have written nice code in a notebook, can I reuse it elsewhere?
 
 **What is going modular?**
@@ -1680,7 +1687,9 @@ The main concept of this section is: turn useful notebook code cells into reusab
 **We are going to use Jupyterv magic function to create a '.py' file for scripts from notebook**
 
 
-
+# PyTorch Transfer Learning
+---
+## 06. PyTorch Transfer Learning
 
 
 
