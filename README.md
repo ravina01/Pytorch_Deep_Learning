@@ -1984,6 +1984,112 @@ model
 ![image](https://github.com/user-attachments/assets/58bc17ac-2506-413f-8d1d-8b9d2f527579)
 
 
+```python
+# Define Loss and Optimizers
+
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), lr = 0.01)
+
+# Import Train function which contain Train and Test Step
+from going_modular.going_modular import engine
+
+# Set Manual seed
+torch.manual_seed(42)
+torch.cuda.manual_seed(42)
+
+# start timer
+from timeit import default_timer as Timer
+
+start_time = Timer()
+
+model_results = engine.train(model=model, train_dataloader = train_dataloader, test_dataloader = test_dataloader, 
+             optimizer=optimizer, loss_fn=loss_fn, epochs=10, device=device)
+
+end_time = Timer()
+
+total_duration = end_time - start_time
+
+print(f"[INFO] Total training time: {total_duration:.3f} seconds")
+```
+
+#### 8. Let's Evaluate our EffNetB0 Feature Extraction Model
+
+```python
+from helper_functions import plot_loss_curves
+
+plot_loss_curves(model_results)
+```
+![image](https://github.com/user-attachments/assets/d53d5aa8-3729-49d5-9ca8-3d2a14261e6e)
+
+
+#### 9. Let's Make Predictions on test data - B0 Feature Extraction Model
+- Lets visualize, visualize , visualize.
+- We have to make sure that test/custom data is -
+    - same shape - images need to be same shape as model was trained on
+    - same datatype - custom data should be in the same data type
+    - same device - custom data/test data should be on the same device
+    - same transform - if you transformed your cutsom data, ideally you will transform the test data and custom data the same.
+ 
+ #### Will create a function to all of this automatically - 'pred_and_plot_image()'
+ 
+-  Input arguments - Trained model, a list of class names, a filepath to a target image, image size, a transform, target device
+-  Open Image with torchvision/ PIL.Image.Open()
+-  Create a tranform if one doesn't exist
+-  Make sure model is on the target device
+- Turn Model to model.eval() mode - to make sure its ready for inference()
+- This will turn off nn.Droput() - drop out is turned off during inference.
+- Transform the target image and make sure its dimensionality is suited for the model. (This mainly relates to batch size)
+- If batch_size is 1, then we can add 1 dim by unsqueeze method()
+- Make Prediction on the image, by passing it to the model.
+- Convert the model's output logits to prediction probababilities - use torch.softmax()
+- Convert the prediction probs to prediction labels using 'torch.argmax()'
+- Plot the image with matplotlib and set the title to prediction lable from the above step.
+
+ 
+ 
+
+
+
+
+# PyTorch Experiment Tracking
+---
+
+### 07. PyTorch Experiment Tracking
+
+- Milestone Project 1: Putting it all together + Visualize it with TensorBoard
+- Remember - If in doubt? Code it out!
+
+#### Whats Experiment Tracking ?
+
+- We built model from scratch using tinyVGG architecture, then EffNetB0 using transfer learning and saw significant change in the model's performace and accurate predictions.
+- **The problem that we are trying so solve is - how would I know which of my model has done the best ?**
+- Build a reliable way to track all the models you have created so far.
+- Different ways to track experiments -
+   - Python Dictionary, CSV Files, print outs
+   - **TensorBoard**
+   - Weights & Biases
+   - MLFlow (open source lib)
+
+
+#### What we are going to build ?
+- Food Vision Mini Experiment Tracking
+- Introduce experiment tracking with Pytorch
+- Building several modelling experiments for FoodVision Mini
+- Evaluating modelling experiments with Tensorboard
+- Making Predictions with best performing model on custom data.
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
