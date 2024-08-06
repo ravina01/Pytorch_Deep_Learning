@@ -2045,9 +2045,71 @@ plot_loss_curves(model_results)
 - Convert the prediction probs to prediction labels using 'torch.argmax()'
 - Plot the image with matplotlib and set the title to prediction lable from the above step.
 
- 
- 
+ ```python
+from typing import List, Tuple
+from PIL import Image
+import matplotlib.pyplot as plt
 
+def pred_and_plot_image(model: nn.Module,
+                        class_names: List[str],
+                        target_img_file_path: str,
+                        image_size: Tuple[int, int] = (224, 224),
+                        transform: torchvision.transforms = None,
+                        device = device
+                        ):
+    # 1. Load in image and convert the tensor values to float32
+    target_image = Image.open(str(target_img_file_path))
+    print(target_image.size)
+    
+    # 2. No need Normalize, the transform would do that.
+
+    # 3. Transform if necessary
+    if transform:
+        image_transform = transform
+    else:
+        print("auto Tranfrom is used")
+        image_transform = weights.transforms()
+
+        # image_transform = transforms.Compose([
+        #     transforms.Resize(image_size),
+        #     transforms.ToTensor(),
+        #     transforms.Normalize(mean=[0.485, 0.456, 0.406],
+        #                          std=[0.229, 0.224, 0.225]),
+        # ])
+
+    model.to(device)
+    model.eval()
+
+    with torch.inference_mode():
+
+        # 4. Add an extra dimension to the image
+        transformed_image = image_transform(target_image).unsqueeze(dim=0)
+
+        # 5. Make a prediction on image with an extra dimension and send it to the target device
+        # 5. forward pass
+        target_image_pred = model(transformed_image.to(device))
+
+    # 6. Converts logits to prediction probabilities.
+    target_image_pred_probs = torch.softmax(target_image_pred, dim=1)
+
+    # 7. Convert prediction probabilities to prediction labels
+    target_image_pred_label = torch.argmax(target_image_pred_probs, dim=1)
+
+    label = class_names[target_image_pred_label]
+
+    # 8. plot the image with predicted lable on top
+    plt.figure()
+    plt.imshow(target_image)
+    plt.title(label)
+    plt.axis(False)
+```
+ 
+#### Main Takeaways :
+- Transfer learning often allows to you get good results with a relatively small amount of custom data.
+- Knowing the power of transfer learning, it's a good idea to ask at the start of every problem, "does an existing well-performing model exist for my problem?"
+- When using a pretrained model, it's important that your custom data be formatted/preprocessed in the same way that the original model was trained on, otherwise you may get degraded performance.
+- The same goes for predicting on custom data, ensure your custom data is in the same format as the data your model was trained on.
+- There are several different places to find pretrained models from the PyTorch domain libraries, HuggingFace Hub and libraries such as timm (PyTorch Image Models).
 
 
 
