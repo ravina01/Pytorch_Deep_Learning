@@ -2078,6 +2078,8 @@ plot_loss_curves(model_results)
 - Evaluating modelling experiments with Tensorboard
 - Making Predictions with best performing model on custom data.
   
+![image](https://github.com/user-attachments/assets/97a10aee-28a9-4dda-a9e5-2e04d3b15a96)
+
 
 
 
