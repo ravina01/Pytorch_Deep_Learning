@@ -1896,4 +1896,15 @@ We are going to later features and classifie head in order to customize this mod
 ##### 3. Pre-trained Models:
  - Using a backbone that has been pre-trained on a large and diverse dataset can significantly speed up the training process and improve performance, especially when the new dataset is small.
 
-#### Different Types of Transfer Learning -
+#### 4. Different Types of Transfer Learning -
+- Feature extractiion - keeping all layers frizenand only changing input datasets + output layer to change number of classes
+- Fine-tuning - unfreeze layer by layer and then change the layers and train again.
+  
+![image](https://github.com/user-attachments/assets/2e146a33-dcdf-4311-bd54-eedcd0d906c4)
+
+![image](https://github.com/user-attachments/assets/c189b0b6-2ec8-4b4f-a22b-ea4a0f6591ef)
+
+![image](https://github.com/user-attachments/assets/126878f1-16a7-49c3-bcaa-7d35ae62bd9f)
+
+
+
