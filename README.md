@@ -1684,22 +1684,216 @@ The main concept of this section is: turn useful notebook code cells into reusab
 - Docstrings - Writing reproducible and understandable code is important. And with this in mind, each of the functions/classes we'll be putting into scripts has been created with Google's Python docstring style in mind.
 - Imports at the top of scripts - Since all of the Python scripts we're going to create could be considered a small program on their own, all of the scripts require their input modules be imported at the start of the script for example:
 
-**We are going to use Jupyterv magic function to create a '.py' file for scripts from notebook**
+**We are going to use Jupyter magic function to create a '.py' file for scripts from notebook - and that magic function is writefile**
+- Example ->
+- write this on each cell node and create a file from it
+- %%writefile going_modular/data_setup.py
+- pin_memory = True parameter in Dataloader -> 
+#### Why Use Pinned Memory?
+- Pinned memory can significantly speed up the data transfer from the host (CPU) to the device (GPU) because:
 
+1. Faster Data Transfer: Pinned memory is not swappable, which means it stays in physical RAM and can be transferred to the GPU faster than pageable memory.
+2. Asynchronous Data Transfer: Using pinned memory allows for asynchronous data transfer between CPU and GPU, which can lead to better utilization of the GPU and overall faster training times.
 
 # PyTorch Transfer Learning
 ---
 ## 06. PyTorch Transfer Learning
 
+We've built a few models by hand so far.
+But their performance has been poor.
+You might be thinking, is there a well-performing model that already exists for our problem?
+And in the world of deep learning, the answer is often yes.
+We'll see how by using a powerful technique called **transfer learning**
+
+#### What is Transfer Learning?
+- Transfer learning allows us to take the patterns (also called weights) another model has learned from another problem and use them for our own problem.
+- For example, we can take the patterns a computer vision model has learned from datasets such as ImageNet (millions of images of different objects) and use them to power our FoodVision Mini model.
+
+#### Why use Transfer Learning ?
+- can leverage an existing neural network architecture proven to work on problems similar to our own.
+- can leverage a working network architecture which has already learned patterns on similar data to our own.
+
+![image](https://github.com/user-attachments/assets/937178a0-5219-42e1-a94b-1d15bb6df8a3)
+
+![image](https://github.com/user-attachments/assets/71fce249-5c2e-444d-b131-adbdd5658cc9)
+
+![image](https://github.com/user-attachments/assets/46c62be3-91e6-414e-b792-ffddad5c8264)
+
+#### Where to find pretrained models
+1. PyTorch domain Libraries
+2. Hugging Face Hub
+3. timm (Pytorch Image Models Library)
+4. Papers with code
+   
+![image](https://github.com/user-attachments/assets/624e4038-fa06-4307-ba54-3e466dec88ff)
+
+#### What we're going to cover
+1. Getting setup
+2. Get data
+3. Create Datasets + dataloaders
+4. Get and customise a pre-trained model
+5. Train model
+6. Evaluate the model by plotting loss curves
+7. make predictions on images from test set.
+**Pre-trained models = foundation Models**
+
+#### Make sure you have this ready (Pre- requisites) -
+1. Make sure the code is ready for training and evaluting model and making predictions, using modular code format.
+2. Need to import functions from -
+    - datasetup.py -> Contains functionality for creating PyTorch DataLoaders for image classification data -> returns train_dataloader, test_dataloader, class_names
+    - engine.py -> Contains functions for training and testing a PyTorch model -> Train_step, test_step and train function ->
+      Passes a target PyTorch models through train_step() and test_step() functions for a number of epochs, training and testing the model in the same epoch loop.
+    - model_builder.py -> Replicates the TinyVGG architecture from the CNN explainer website in PyTorch.
+    - predictions.py -> Utility functions to make predictions.-> send an image and plot image with predictions.
+    - train.py -> run this file -> Trains a PyTorch image classification model using device-agnostic code -> also saves model.
+    - utils.py -> contain method to save model.
+
+#### 0. Getting Setup
+```python
+# Setup Dirs
+train_dir = image_path / "train"
+test_dir = image_path / "test"
+```
+#### 1. Create datasets and dataloaders
+- Since we've downloaded the going_modular directory, we can use the data_setup.py
+- But since we'll be using a pretrained model from torchvision.models, there's a specific transform we need to prepare our images first.
+- All pre-trained models expect input images normalized in the same way, i.e. mini-batches of 3-channel RGB images of shape (3 x H x W), where H and W are expected to be at least 224.
+
+The images have to be loaded in to a range of [0, 1] and then normalized using mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225].
+
+You can use the following transform to normalize:
+
+normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225])
 
 
 
+![image](https://github.com/user-attachments/assets/0ad4d842-db53-4577-ae6e-60699def3758)
 
 
+**Important Note - when using pre-trained model, it's important that the data(in;cuding your custom data) that you pass through it is tranformed in the same way that the data the model was trained on. Make sure data distribution is same as pre-trained model**
 
+#### 1. we manually created the transform here
+```python
 
+data_manual_transform = transforms.Compose([
+    transforms.Resize(size=(224,224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], # 3. A mean of [0.485, 0.456, 0.406] (across each colour channel)
+                         std=[0.229, 0.224, 0.225])
+    ])
 
+from going_modular.going_modular import data_setup
+batch_size = 3
+num_workers = os.cpu_count()
 
+train_dataloader, test_dataloader, class_names = data_setup.create_dataloaders(train_dir=train_data,
+                                                                               test_dir=test_data,
+                                                                               transform=data_manual_transform,
+                                                                               batch_size=batch_size
+                                                                               )
 
+```
+#### 2. we automatically created the data transform here based on pre-trained model weights you are using.
 
+**RESOURCE - https://pytorch.org/vision/stable/models.html**
 
+- EfficientNet - B0 to B7 - Larger the number deeeper the network. 
+- To automatically create data transform we need to download the EfficientNetB0 weights.
+- These are the patterns that model has learnt on Imagenet data.
+- Will use the same for our own purpose.
+- EfficientNet_B0_Weights.DEFAULT is equivalent to EfficientNet_B0_Weights.IMAGENET1K_V1. You can also use strings, e.g. weights='DEFAULT' or weights='IMAGENET1K_V1'.
+
+```python
+weights = torchvision.models.EfficientNet_B0_Weights.DEFAULT 
+# Default = Best available performing weights
+
+print(weights)
+
+auto_transforms = weights.transforms()
+print(auto_transforms)
+
+train_dataloader, test_dataloader, class_names = data_setup.create_dataloaders(train_dir=train_data,
+                                                                               test_dir=test_data,
+                                                                               transform=auto_transforms,
+                                                                               batch_size=batch_size
+                                                                               )
+```
+
+```
+# TRANFORMS of EFFICIENTNETB0
+EfficientNet_B0_Weights.IMAGENET1K_V1
+ImageClassification(
+    crop_size=[224]
+    resize_size=[256]
+    mean=[0.485, 0.456, 0.406]
+    std=[0.229, 0.224, 0.225]
+    interpolation=InterpolationMode.BICUBIC
+)
+```
+
+#### 2. Which Pre-trained model should we use ?
+- Experiment, Experiment, and Experiment!
+- The whole idea of Transfer Learning is to take an already well performing model from a problem space similar to your own, and then customize to your own problem.
+- Three things to consider -
+  - Speed - How fast does it run ?
+  - Size - How big is the model ?
+  - Performance - How well does it classify/detection/segment on your chosen problem ?
+
+Where does the model leave ?
+- Is it on device? (Like self-driving car)
+- Is it live on server?
+Look at this - https://pytorch.org/vision/stable/models.html#classification
+
+Which model you would select ?
+
+![image](https://github.com/user-attachments/assets/b2fbdda4-d402-4fc8-ae04-624c5c97ebbd)
+
+- Higher the number of paras : slower the model is going to run in terms of inference/ making predictions.
+- Find best trade-offs between highest accuracy and lowest Parameters.
+- Efficient Net - Great in numbers of accuracy and lowest in parameters best in terms of performace vs size.
+- Also MobileNet.
+- But if you've got unlimited compute power, as The Bitter Lesson states, you'd likely take the biggest, most compute hungry model you can.
+- Understanding this performance vs. speed vs. size tradeoff will come with time and practice.
+- For me, I've found a nice balance in the efficientnet_bX models.
+
+#### 3. Setting up a pre-trained model with Torchvision
+- #### 3.1 Old version way -> prior to torchvision v0.13 - Its Deprectaed - pretrained=True is deprected.
+- #### Use Weights instead of pretrained=True
+```python
+model = torchvision.models.efficientnet_b0(pretrained=True)
+/home/ravina/.local/lib/python3.8/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/ravina/.local/lib/python3.8/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=EfficientNet_B0_Weights.IMAGENET1K_V1`. You can also use `weights=EfficientNet_B0_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+```
+
+- #### 3.2 New Method of creating pretrained Model -> after torchvision v0.13
+```python
+effnetb0_weights = torchvision.models.EfficientNet_B0_Weights.DEFAULT # default is best available weights
+
+model = torchvision.models.efficientnet_b0(weights=effnetb0_weights)
+```
+#### Let's breakdown model into 3 parts ->
+1. Model Features -> 
+2. Model.avgpool ->
+3. Model.classifier Head->
+We are going to later features and classifie head in order to customize this model.
+
+![image](https://github.com/user-attachments/assets/64459260-a2da-40f5-a1fa-ee78361c8187)
+
+**The term "backbone" is used because this pre-trained network serves as the foundational structure or core of the new model.**
+
+#### How it is Used in Transfer Learning
+##### 1. Feature Extraction:
+   - The backbone network is used to extract features from the input images. These features are then fed into additional layers that are specific to the new task.
+   - Example: In object detection, the backbone (such as ResNet, VGG, or EfficientNet) extracts features which are then used by the detection head to predict bounding boxes and classes.
+
+##### 2. Fine-Tuning:
+ - The backbone network is often fine-tuned on the new dataset. This means that the weights of the pre-trained network are adjusted slightly to better fit the specifics of the new task.
+ - Fine-tuning typically involves training the entire model (backbone + new layers) with a smaller learning rate to preserve the useful features learned from the large dataset while adapting to the new task.
+
+##### 3. Pre-trained Models:
+ - Using a backbone that has been pre-trained on a large and diverse dataset can significantly speed up the training process and improve performance, especially when the new dataset is small.
+
+#### Different Types of Transfer Learning -
