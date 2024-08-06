@@ -1897,14 +1897,96 @@ We are going to later features and classifie head in order to customize this mod
  - Using a backbone that has been pre-trained on a large and diverse dataset can significantly speed up the training process and improve performance, especially when the new dataset is small.
 
 #### 4. Different Types of Transfer Learning -
-- Feature extractiion - keeping all layers frizenand only changing input datasets + output layer to change number of classes
-- Fine-tuning - unfreeze layer by layer and then change the layers and train again.
+- 1. Feature extraction - keeping all layers frizenand only changing input datasets + output layer to change number of classes
+- 2. Fine-tuning - unfreeze layer by layer and then change the layers and train again.
   
 ![image](https://github.com/user-attachments/assets/2e146a33-dcdf-4311-bd54-eedcd0d906c4)
 
 ![image](https://github.com/user-attachments/assets/c189b0b6-2ec8-4b4f-a22b-ea4a0f6591ef)
 
 ![image](https://github.com/user-attachments/assets/126878f1-16a7-49c3-bcaa-7d35ae62bd9f)
+
+#### 5. Getting sumary torchinfo.summary()
+```python
+# Print summary 
+from torchinfo import summary
+
+summary(model)
+```
+- will freeze Trainable params: 5,288,548 
+
+#### 6. Feature extraction: Frezzing base layer of pretrained/foundational Model + Updating Classifier Head
+- Freeze all of the base layers in EffNetB0, keep output layer as trainable.
+- Check total trainable params now, the count is reduced.
+
+```python
+# Freeze all base layers in the "features" section of the model (the feature extractor) by setting requires_grad=False
+for param in model.features.parameters():
+    param.requires_grad = False
+
+# Run this command to check if all Trainable paras are False now
+summary(model=model, 
+        input_size=(1, 3, 224, 224), # make sure this is "input_size", not "input_shape"
+        # col_names=["input_size"], # uncomment for smaller output
+        col_names=["input_size", "output_size", "num_params", "trainable"],
+        col_width=20,
+        row_settings=["var_names"]
+)
+```
+
+Now lets update the classifier head->
+```python
+model.classifier
+Sequential(
+  (0): Dropout(p=0.2, inplace=True)
+  (1): Linear(in_features=1280, out_features=1000, bias=True)
+)
+```
+#### Feature Extraction: Updating Classifier Head
+```python
+from torch import nn
+
+torch.manual_seed(42)
+torch.cuda.manual_seed(42)
+
+model.classifier = nn.Sequential(
+    nn.Dropout(p=0.2, inplace=True), # regularization - avoid overfitting, 20% neurons are 0 now
+    nn.Linear(in_features=1280, out_features=len(class_names), bias=True)
+    # this will instantiate with random weights hence, need to decalre manual seed for results for re-producinility
+).to(device=device)
+print(model.classifier)
+
+"""
+Sequential(
+  (0): Dropout(p=0.2, inplace=True)
+  (1): Linear(in_features=1280, out_features=3, bias=True)
+)
+"""
+```
+
+##### Make sure your model is on cuda device
+```python
+effnetb0_weights = torchvision.models.EfficientNet_B0_Weights.DEFAULT # default is best available weights
+
+model = torchvision.models.efficientnet_b0(weights=effnetb0_weights).to(device)
+model
+```
+
+![image](https://github.com/user-attachments/assets/d8706b66-7da5-4e88-ab54-e79691beac2a)
+
+**Trainable params - in = 1280, out = 3, Hence, 1280 x 3 + 3 = 3843 Trainalble Params**
+
+#### 7. Let's Train our EffNetB0 Feature Extraction Model
+- All features params are frozen
+- Only output params are trainlable = 3843
+- We reduced from 5M trainable params to 3843 trainable params only. (Remember this is only for small datasets. and Fine-tuning is required for larger datasets)
+
+![image](https://github.com/user-attachments/assets/58bc17ac-2506-413f-8d1d-8b9d2f527579)
+
+
+
+
+
 
 
 
