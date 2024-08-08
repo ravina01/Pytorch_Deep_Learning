@@ -2121,7 +2121,7 @@ def pred_and_plot_image(model: nn.Module,
 - Milestone Project 1: Putting it all together + Visualize it with TensorBoard
 - Remember - If in doubt? Code it out!
 
-#### Whats Experiment Tracking ?
+#### What's Experiment Tracking ?
 
 - We built model from scratch using tinyVGG architecture, then EffNetB0 using transfer learning and saw significant change in the model's performace and accurate predictions.
 - **The problem that we are trying so solve is - how would I know which of my model has done the best ?**
@@ -2142,19 +2142,130 @@ def pred_and_plot_image(model: nn.Module,
   
 ![image](https://github.com/user-attachments/assets/97a10aee-28a9-4dda-a9e5-2e04d3b15a96)
 
+```python
+def set_seeds(seed:int = 42):
+    """  
+        Call this function to set seeds. Sets random sets fro torch operations
+
+        Args:
+            seed(int): random seed to set, defaults to 42.
+    """
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+```
+
+Resource - https://pytorch.org/vision/stable/models.html
+
+- Create Datasets and data loaders - with manual transforms
+- goal with transforms is to ensure your cutsom data is formatted in a reproducible way as well as a way that suit pretrained models
+- to avoid performance degradations
+- All pre-trained models expect input images normalized in the same way, i.e. mini-batches of 3-channel RGB images of shape (3 x H x W), where H and W are expected to be at least 224. The images have to be loaded in to a range of [0, 1]
+  
+```python
+normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225])
+```
+Steps -
+1. setup custom data
+2. setup seed function
+3. setup data loaders with manual transforms
+4. setup data loaders with automatic transforms
+5. preparing a pretrained model
+6. freeze all base layers and modify the the classifier head - call set_seed() as this is going to instantiate the linear layer
+7. set model to target device
+8. use torchinfo - summary
+9. now will use tensorboard with Pytorch - train single model and track results
+10. define loss_fn and optimizer
+11. Tensorboard -(track experiments) from torch.utils.tensorboard import SummaryWriter - tracks visualizing metrics - loss, accuracy
+12. - visualize model graph
+    - histograms of weights, biases and other tensors
+13. 
+
+    
+```python
+from torchinfo import summary
+
+summary(model, input_size=(1,3,224,224), verbose=0, 
+        col_names=["input_size", "output_size", "num_params", "trainable"], 
+        col_width=20,
+        row_settings=["var_names"])
+
+```
 
 
+# Mile Stone Project 2 - PyTorch Paper Replicating - Transformers
+---
+## 06. PyTorch Paper Replicating - Vision Transformers
 
+- Convolutional neural network use convolutions while transformers uses self-attention mechanism.
+- We will be focusing on Vision Transformer paper - an Image is worth 16x16 words: Transforners for Image Recognition at scale
 
+George Hotz, founder of comma.ai
+![image](https://github.com/user-attachments/assets/c36025af-0681-4bac-9917-d88b99fd2d5a)
 
+- where can you find ML research papers ?
+- paperwithcode
+- arxiv
 
+#### what are we going to cover ?
+- Replicate ViT paper with Pytorch code
+- Will take Food vision Mini and build it with ViT Architecture
+- Setup the code
+- Train custom ViT
+- Feature Extraction with Pre-trained ViT - transfer learning
 
+### Whats attention in ML ?
+- The attention mechanism enables models to selectively weigh the importance of different parts of the input, improving the model's ability to capture relevant information and dependencies.
+- Resource - https://jalammar.github.io/illustrated-transformer/
 
+#### Key Concepts of Attention of Attention -
+1. Attention Weights -
+- Idea is to compute a set of weights that determine how much focus / "attention" the model should give to different parts of the input.
+- These weights are usually computed as a function of the input data, and they help the model decide which parts of the input are more relevant for a given task.
 
+2. Self-Attention -
+- aka intra-attention, is a mechanism where the attention is computed within a single sequence of data.
+- Each element in the sequence attends to all other elements, allowing the model to capture dependencies and relationships between elements, regardless of their distance in the sequenece.
+- This mechanism is the backbone of the Transformer architecture
 
+3. Scaled Dot-Product Attention - 
+- A common form of attention used in Transformers is scaled dot-product attention. It involves three components: Queries, Keys, and Values.
+- Query (Q): A vector representing the current element in the sequence for which we want to compute the attention.
+- Key (K): A vector representing each element in the sequence, used to match against the query.
+- Value (V): A vector representing the actual content that we want to focus on.
+- The attention score is calculated as the dot product of the query and key, scaled by the square root of the dimensionality of the key vectors, followed by a softmax operation to get the attention weights. These weights are then used to compute a weighted sum of the value vectors.
 
+4. Multi-Head Attention -
+- In practice, the attention mechanism is often implemented as multi-head attention, where multiple attention mechanisms (heads) are applied in parallel.
+- Each head operates on different parts of the input or captures different types of relationships, and their outputs are concatenated and linearly transformed.
+- Multi-head attention allows the model to capture diverse features and relationships within the data.
 
+5. Example in Computer Vision
+- In computer vision, attention mechanisms have been adapted to tasks like image captioning, object detection, and image classification.
 
+- Image Captioning:
+- Attention helps the model focus on different parts of an image when generating descriptive captions. For example, when describing an image of a dog sitting by a tree, the model might focus on the dog when generating the word "dog" and on the tree when generating the word "tree".
+
+### Let's Replicate ViT Architecture -
+![image](https://github.com/user-attachments/assets/2f9f5841-d468-4cc4-a19a-60688710f967)
+what are inputs, outputs, layers and blocks ?
+
+![image](https://github.com/user-attachments/assets/8dd9bbc4-2d2b-4c72-af46-814891cc24f3)
+
+#### Overview - ViT
+- Inputs - image tensors - batches
+- Outputs - image classification labels
+- layers - takes an input, manipulates with function, could be self-attention blocks.
+- blocks - collection of layers
+- model - collection of blocks
+
+**Will Put-together everything piece by piece**
+![image](https://github.com/user-attachments/assets/4fceb8b2-31af-48e0-bf98-c69abd544ef0)
+
+#### Pieces of Puzzle -
+1. Visual Overview of the architecture
+2. Four Equations - math equations which define the functions of each layer/block
+3. Different Hyperparameters for architecture/training
 
 
 
