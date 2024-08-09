@@ -2267,7 +2267,25 @@ what are inputs, outputs, layers and blocks ?
 2. Four Equations - math equations which define the functions of each layer/block
 3. Different Hyperparameters for architecture/training
 
+---
+
+### The Inputs and Outputs breakdown - 
+![image](https://github.com/user-attachments/assets/2888848b-a31a-4d1c-b12d-a0b567ebc31e)
+
+- Images get cut into non-overlapping patches, and then its fed into Tranformer Encoder
 
 
+![image](https://github.com/user-attachments/assets/2f878bc7-d9da-4a25-9ad3-9c6ab9fcbf1a)
 
+![image](https://github.com/user-attachments/assets/dab81964-ba1c-4b14-83b6-b8bb13602b28)
 
+#### Breakdown 4 equations -
+- 1st equation-  Patch + Positional Embeddings
+- Equation 1 overview - This equation deals with the class token, patch embedding and position embedding ( E is for embedding) of the input image.
+- In vector form, the embedding might look something like:
+ ```python
+x_input = [class_token, image_patch_1, image_patch_2, image_patch_3...] + [class_token_position, image_patch_1_position, image_patch_2_position, image_patch_3_position...]
+```
+- Positional embeddings are added to the patch embeddings to retain positional information.
+- The resulting sequence of embedding vectors serves as input to the encoder
+-  
