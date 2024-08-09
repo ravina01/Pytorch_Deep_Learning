@@ -2268,7 +2268,13 @@ what are inputs, outputs, layers and blocks ?
 3. Different Hyperparameters for architecture/training
 
 ---
-
+**Overview**
+- Then will have all the pieces of puzle ready to start and replicate the vision Transformers model
+- we will be solwly breaking down the overall the Vision transformer paper into - smaller pieces of the puzzle.
+- will start with figure 1 broke down, into inputs outputs , layers, and blocks.
+- will look at 4 equations, which describbes what happens ebhind each of the layers / blocks
+- Table 1 - model variant - describes about how the hyperparameters of each model variants .
+  
 ### The Inputs and Outputs breakdown - 
 ![image](https://github.com/user-attachments/assets/2888848b-a31a-4d1c-b12d-a0b567ebc31e)
 
@@ -2280,7 +2286,7 @@ what are inputs, outputs, layers and blocks ?
 ![image](https://github.com/user-attachments/assets/dab81964-ba1c-4b14-83b6-b8bb13602b28)
 
 #### Breakdown 4 equations -
-- 1st equation-  Patch + Positional Embeddings
+##### 1st equation-  Patch + Positional Embeddings
 - Equation 1 overview - This equation deals with the class token, patch embedding and position embedding ( E is for embedding) of the input image.
 - In vector form, the embedding might look something like:
  ```python
@@ -2288,4 +2294,63 @@ x_input = [class_token, image_patch_1, image_patch_2, image_patch_3...] + [class
 ```
 - Positional embeddings are added to the patch embeddings to retain positional information.
 - The resulting sequence of embedding vectors serves as input to the encoder
--  
+
+Equation 1 :
+![image](https://github.com/user-attachments/assets/4eb61d07-012e-4f74-a51d-5ad4ef286cd5)
+
+
+##### Equation 2 and 3 -
+- Transformer encoder consits of alternating layers of multihead self-attention and MLP blocks, LayerNorm (LN) is applied before every block and residual connections after every block.
+- Residual/ skip conncetions are type of skip-conncetion that learn residual functions with reference to the layer inputs
+- Prevent things from getting too small.
+  
+ ![image](https://github.com/user-attachments/assets/e006e2ee-0a73-4173-9caa-71e87045cc09)
+
+**Layer Normalization (LN)**
+1. What is Layer Normalization?
+
+- Definition: Layer Normalization (LN) is a technique used to normalize the inputs across the features for each data point in a mini-batch. Unlike Batch Normalization, which normalizes across the batch dimension, Layer Normalization normalizes across the feature dimension for each individual sample.
+
+psuedo code 
+```python
+# EQUATION 2
+x_output_MSA_block = MSA_layer(LN_layer(x_input)) + x_input
+Notice the skip connection on the end (adding the input of the layers to the output of the layers).
+```
+
+```python
+# EQUATION 3
+x_output_MLP_block = MLP_layer(LN_layer(x_output_MSA_block)) + x_output_MSA_block
+Notice the skip connection on the end (adding the input of the layers to the output of the layers).
+```
+
+##### Equation 4 -
+- MLP - Multi layer Perceptron , 
+- a feed forward neural net that generates a set of outputs from a set of inputs.
+- This says for the last layer  L, the output  y is the 0 index token of  z wrapped in a LayerNorm layer (LN).
+- The final classification head is implemented by a MLP with one hidden linear layer at fine tuning time.
+- MLP - One hidden layer at training time
+- MLP - One hidden layer at fine-tuning Time
+```python
+y = Linear_layer(LN_layer(x_output_MLP_block[0]))
+```
+
+### breaking down table 1 = Model Variants
+
+![image](https://github.com/user-attachments/assets/67802091-0fa3-4711-a677-edea4db493bf)
+
+-This table showcasing the various hyperparameters of each of the ViT architectures.
+
+- You can see the numbers gradually increase from ViT-Base to ViT-Huge.
+
+- We're going to focus on replicating ViT-Base (start small and scale up when necessary) but we'll be writing code that could easily scale up to the larger variants.
+
+- Breaking the hyperparameters down:
+
+- Layers - How many Transformer Encoder blocks are there? (each of these will contain a MSA block and MLP block)
+- Hidden size  
+D  - This is the embedding dimension throughout the architecture, this will be the size of the vector that our image gets turned into when it gets patched and embedded. Generally, the larger the embedding dimension, the more information can be captured, the better results. However, a larger embedding comes at the cost of more compute.
+- MLP size - What are the number of hidden units in the MLP layers?
+- Heads - How many heads are there in the Multi-Head Attention layers?
+- Params - What are the total number of parameters of the model? Generally, more parameters leads to better performance but at the cost of more compute. You'll notice even ViT-Base has far more parameters than any other model we've used so far.
+We'll use these values as the hyperparameter settings for our ViT architecture.
