@@ -2354,3 +2354,30 @@ D  - This is the embedding dimension throughout the architecture, this will be t
 - Heads - How many heads are there in the Multi-Head Attention layers?
 - Params - What are the total number of parameters of the model? Generally, more parameters leads to better performance but at the cost of more compute. You'll notice even ViT-Base has far more parameters than any other model we've used so far.
 We'll use these values as the hyperparameter settings for our ViT architecture.
+
+
+
+### Pre-trained model for training Vision Transformers
+why use pre-trained model?
+
+- data is limited
+- limited training
+- get better results faster
+
+- ViT Large 16 model pre-trained on Image-net21k dataset perfomrms well on most datasets too, it could be trained using standrad cloud for 30 days approximately.
+- Hugging face bloom took 3.5 months to train.
+- TPU v3 with 8 cores it costs 8dollars /hr = 8x24x30 = cost of renting TPU v3 for 30 days = in usd = 5760 usd
+- pre-trained ViT has 2 parts - encoder + heads - pre-trained on imagenet 1000 classes.
+- after making the classifier head as - trainable and changing the output_features- we reduced the trainlabe paras from 85 M to just 2k
+
+
+### Note -
+The inference transforms are available at ViT_B_16_Weights.IMAGENET1K_V1.transforms and perform the following preprocessing operations: Accepts PIL.Image, batched (B, C, H, W) and single (C, H, W) image torch.Tensor objects. The images are resized to resize_size=[256] using interpolation=InterpolationMode.BILINEAR, followed by a central crop of crop_size=[224]. Finally the values are first rescaled to [0.0, 1.0] and then normalized using mean=[0.485, 0.456, 0.406] and std=[0.229, 0.224, 0.225].
+
+Note - mobile device/ web browser, due to compute restrictions its better to deploy a smaller model.
+- 327 MB is the saved model size - is it too big ?
+- can we deploy this on mobile app/ web browser ?
+
+- which is better ?
+- Efficient net b2 was 28 MBs
+- 
