@@ -2380,4 +2380,17 @@ Note - mobile device/ web browser, due to compute restrictions its better to dep
 
 - which is better ?
 - Efficient net b2 was 28 MBs
+- ViT = 87 M base model
+
+# Lets replicate ->
+
+### Eqution 1 - Patch Position and class Embeddings
+- Split data into patches.
+- layers = input -> function -> Output
+- whats input shape ? whats output shape ?
+- input shape - 224, 224, 3 - H x W x C
+- output image shape - N x (P square) x C
+- N - number of patches = H x W / (P square)
+- D - Const latent vector size which is = embedding dimensions
+
 - 
