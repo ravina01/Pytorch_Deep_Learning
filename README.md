@@ -2490,7 +2490,75 @@ B, 768, 196 -> B , 196, 768
 - Initialize with appropraite Hyperparameters - channels, embedding dim and patch_size
 - layer - image into embedded patches, with conv2d and flatten
 - define a forward method. and call thhe block if conv2d and flatten
+- Quickly check if the output shape is matching or not.
 
 
+![image](https://github.com/user-attachments/assets/fd23f004-201c-42d7-92e0-1b953506eea2)
+
+
+```python
+# will crrate a class ->
+
+class PatchEmbeddings(nn.Module):
+
+    def __init__(self,in_channels:int=3,
+                 embedding_dim:int = 786, 
+                 patch_size: int = 16) -> None:
+        
+        super().__init__()
+
+        self.embedding_dim = embedding_dim
+        self.patch_size = patch_size
+        self.in_channels = in_channels
+
+        self.conv_layer = torch.nn.Conv2d(in_channels=in_channels, out_channels=self.embedding_dim,
+                                           kernel_size=self.patch_size, stride=self.patch_size,
+                                           padding=0)
+        
+        self.flatten_layer = nn.Flatten(start_dim=2, end_dim=-1)
+
+    
+    def forward(self,x):
+        # create assertiosn - to check that inputs are the correct shape
+
+        # x would be 1,3,224,224
+
+        image_resolution = x.shape[-1] # 224
+
+        assert image_resolution % patch_size == 0, f"Input Image size must be divisible by patch size, image shape = {image_resolution}"
+
+        x_patched = self.conv_layer(x)
+        x_flattened = self.flatten_layer(x_patched)
+
+        # The flattened outputs are - B, 786, 196 but we want this in B, 196, 786 so will have to permute the flattened tensor
+        x_flattened = x_flattened.permute(0,2,1)
+
+        return x_flattened
+
+```
+
+```python
+
+# VERIFY
+# lets check if it works
+seed = 42
+torch.manual_seed(seed)
+x_tensor = torch.rand(1,3,224, 224)
+
+patchEmbedding_output = PatchEmbeddings()
+flattened_embeddings = patchEmbedding_output.forward(x_tensor)
+
+print(flattened_embeddings.shape)
+# torch.Size([1, 196, 786])
+
+```
+![image](https://github.com/user-attachments/assets/0a7b2e52-fc31-4af1-8d5e-07d2306853c9)
+
+- H W C -> N, (patch square x color channels) -> 196, 786 , 14 by 14 - image size = 224/16
+
+- next tasks ->
+- creating class tokens and positional embeddings.
+
+- Our aim is to create -> class tokens, Patch embedings, positional embeddings
 
 
