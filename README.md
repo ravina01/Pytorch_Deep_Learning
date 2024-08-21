@@ -2421,8 +2421,27 @@ Note - mobile device/ web browser, due to compute restrictions its better to dep
 - conv2d -> images -> patches -> with learnlable feature maps
 - conv2d layer expects batch dim.
 - the input sequence is obtained by simply flattening the spatial dim of the feature map and projecting to the Tranforner dimensions.
+
+- we passed image - torch.Size([1, 3, 224, 224]) -> convrted it into torch.Size([1, 768, 14, 14]) -> batchsize, embdeeing dim, feature_map_height, feature_map_width.
+- gradient of this conv layer will be trackked and updated at the time of back propogation.
+- lets visuaalize the multi-simensional feature maps
+- 
 - 
 
+![image](https://github.com/user-attachments/assets/b9b6620b-0932-4481-9298-c3b59ab592d4)
 
+- Notice how the feature maps all kind of represent the original image, after visualizing a few more you can start to see the different major outlines and some major features.
+
+- The important thing to note is that these features may change over time as the neural network learns.
+
+- And because of these, these feature maps can be considered a learnable embedding of our image.
+- single feature map
+
+![image](https://github.com/user-attachments/assets/8f800661-15a7-4bce-b2ee-ecb4fec796d5)
+
+
+
+
+  
 
 
