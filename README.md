@@ -2393,4 +2393,31 @@ Note - mobile device/ web browser, due to compute restrictions its better to dep
 - N - number of patches = H x W / (P square)
 - D - Const latent vector size which is = embedding dimensions
 
+### create patch embedding with convolution layer -->
+- will create image patches and turn them into patch embeddings
+- will flatten the image into sequence.
+- CNN explainer website
+- with kernel size = 16 and patch size of 16 will convert the image patches into feature maps and then will flatten it.
+- with torch.nn flatten layer
+- then will add positional embedding on top of it.
+- convolution represnetation is leranable embeddings
 - 
+
+- Input (2D image): (224, 224, 3) -> (height, width, color channels)
+- Output (flattened 2D patches): (196, 768) -> (number of patches, embedding dimension)
+
+- 16 x 16 x 3 = 768 - embedding dim
+- We can recreate these with:
+
+- torch.nn.Conv2d() for turning our image into patches of CNN feature maps.
+- torch.nn.Flatten() for flattening the spatial dimensions of the feature map.
+
+- conv 2d always takes image input in 1, 3, H W size
+- 
+
+### torch.Size([1, 768, 14, 14]) -> [batch_size, embedding_dim, feature_map_height, feature_map_width]
+
+
+
+
+
