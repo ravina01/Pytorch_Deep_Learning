@@ -2439,9 +2439,58 @@ Note - mobile device/ web browser, due to compute restrictions its better to dep
 
 ![image](https://github.com/user-attachments/assets/8f800661-15a7-4bce-b2ee-ecb4fec796d5)
 
+## lets flatten the feature maps -> get 1, 768, 196
+- we have a series of convolutional feature maps (patch embeddings) that we want to flatten into a sequence of patch embedding.
+- to satisfy the criteria of input ViT transformer encoder.
+- what we want - batch_size , embeddimg_dim, number of patches -> 1, 768, 196
+- 
+- 
+
+ ```python
+# lets flatttem 14 x 14 feature maps into one dim
+
+flatten_feature_maps = nn.Flatten(start_dim=2, end_dim=-1)
+flattened_feature_map = flatten_feature_maps(image_out_of_conv)
+# start dim and end dim that we want to faltten - 1, 768, 14, 14 we want to flatten the last 2 dim.
+
+print(flattened_feature_map.shape)
+# torch.Size([1, 768, 196])
+
+```
+
+ ```python
+# lets put everything together
+
+# conv2d
+
+plt.imshow(image.permute(1,2,0))
+plt.title(labels[0])
+plt.axis(False)
 
 
+image_out_of_conv = conv2d(image.unsqueeze(0))
 
-  
+print(f"Image Feature map (patches) shape {image_out_of_conv.shape}")
+
+
+image_out_of_conv_flattened = flatten_feature_maps(image_out_of_conv)
+
+print(f"Flattened Feature map (patches) shape {image_out_of_conv_flattened.shape}")
+
+```
+
+But we want this in rearranged orm -> batch_size, embeddimg_dim, number of_patches
+B, 768, 196 -> B , 196, 768
+
+- we turned 2d image into 1d image of patch embeddings now second part will feed this to transformer encoder.
+
+### Putting it all together will create embedding layer
+- we are slowly constructing the layers, blocks of the VIT
+- For that will create a class - PatchEmbedding class
+- Initialize with appropraite Hyperparameters - channels, embedding dim and patch_size
+- layer - image into embedded patches, with conv2d and flatten
+- define a forward method. and call thhe block if conv2d and flatten
+
+
 
 
