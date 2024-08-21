@@ -2416,7 +2416,12 @@ Note - mobile device/ web browser, due to compute restrictions its better to dep
 - 
 
 ### torch.Size([1, 768, 14, 14]) -> [batch_size, embedding_dim, feature_map_height, feature_map_width]
-
+- Patch embedding are applied with the help of CNN
+- and then feature maps are flattened later on with added positional embedding
+- conv2d -> images -> patches -> with learnlable feature maps
+- conv2d layer expects batch dim.
+- the input sequence is obtained by simply flattening the spatial dim of the feature map and projecting to the Tranforner dimensions.
+- 
 
 
 
